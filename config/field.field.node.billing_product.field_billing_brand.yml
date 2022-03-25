@@ -1,0 +1,29 @@
+uuid: 328884ed-f9b4-428b-88a1-c22d353d8876
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_brand
+    - node.type.billing_product
+    - taxonomy.vocabulary.billing_brand
+id: node.billing_product.field_billing_brand
+field_name: field_billing_brand
+entity_type: node
+bundle: billing_product
+label: Brand
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      billing_brand: billing_brand
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

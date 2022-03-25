@@ -1,0 +1,327 @@
+uuid: eb6dc4a5-4ac9-4500-971d-bf90e56903c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.billing_bill.body
+    - field.field.node.billing_bill.feeds_item
+    - field.field.node.billing_bill.field_billing_bill_tags
+    - field.field.node.billing_bill.field_billing_company
+    - field.field.node.billing_bill.field_billing_date
+    - field.field.node.billing_bill.field_billing_location
+    - field.field.node.billing_bill.field_billing_month
+    - field.field.node.billing_bill.field_billing_payment_type
+    - field.field.node.billing_bill.field_billing_products
+    - field.field.node.billing_bill.field_billing_year
+    - field.field.node.billing_bill.field_field_billing_verified
+    - node.type.billing_bill
+  module:
+    - ctools
+    - datetime
+    - layout_builder
+    - layout_discovery
+    - options
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 25-75
+        components:
+          b735b062-1aaf-4048-846c-c347bc717bd0:
+            uuid: b735b062-1aaf-4048-846c-c347bc717bd0
+            region: second
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_products'
+              label: Products
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: table_row_view_mode
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+          bba67d0b-9c7c-4927-b395-319b06534982:
+            uuid: bba67d0b-9c7c-4927-b395-319b06534982
+            region: first
+            configuration:
+              id: 'entity_view:node'
+              label: 'Bill Entity view (Content)'
+              label_display: '0'
+              provider: ctools
+              view_mode: default
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+        components:
+          f97ca67f-18bc-4599-b82b-f67a8b764d69:
+            uuid: f97ca67f-18bc-4599-b82b-f67a8b764d69
+            region: first
+            configuration:
+              id: 'extra_field_block:node:billing_bill:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+          bf85eee3-8785-4ba7-9d3e-3f49bb94f603:
+            uuid: bf85eee3-8785-4ba7-9d3e-3f49bb94f603
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          211224e5-aa84-4d2f-9a49-58afccd6f0af:
+            uuid: 211224e5-aa84-4d2f-9a49-58afccd6f0af
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: hidden
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+          37792744-9141-4fff-b6bb-db428e72df2e:
+            uuid: 37792744-9141-4fff-b6bb-db428e72df2e
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_location'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+          f392d463-585b-4ecf-9199-eeb571ad2fcf:
+            uuid: f392d463-585b-4ecf-9199-eeb571ad2fcf
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_company'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+          50a051bc-1b8a-4921-bdda-2dedcaf1b2e3:
+            uuid: 50a051bc-1b8a-4921-bdda-2dedcaf1b2e3
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_bill_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+          c894ce83-7e1e-43c8-8c0a-e1b7116de549:
+            uuid: c894ce83-7e1e-43c8-8c0a-e1b7116de549
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_payment_type'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+          0e0ddada-46f8-4d39-9888-2608cd2e0ac4:
+            uuid: 0e0ddada-46f8-4d39-9888-2608cd2e0ac4
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_month'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+          89621166-b06d-42ec-a2a4-fba8de36eaa9:
+            uuid: 89621166-b06d-42ec-a2a4-fba8de36eaa9
+            region: first
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_year'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+          30bbe64b-b8ab-45a4-b457-1c1c3f4c1ecd:
+            uuid: 30bbe64b-b8ab-45a4-b457-1c1c3f4c1ecd
+            region: second
+            configuration:
+              id: 'field_block:node:billing_bill:field_billing_products'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+        third_party_settings: {  }
+id: node.billing_bill.full
+targetEntityType: node
+bundle: billing_bill
+mode: full
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: first
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_billing_bill_tags:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: first
+  field_billing_company:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: first
+  field_billing_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: first
+  field_billing_location:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: first
+  field_billing_month:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 7
+    region: first
+  field_billing_payment_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: first
+  field_billing_products:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 9
+    region: second
+  field_billing_year:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: first
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: first
+hidden:
+  feeds_item: true
+  field_field_billing_verified: true
+  layout_builder__layout: true

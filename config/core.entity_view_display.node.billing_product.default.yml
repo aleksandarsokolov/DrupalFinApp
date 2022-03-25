@@ -1,0 +1,89 @@
+uuid: e6a2602a-e128-4319-a262-8cef1d35fee2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.billing_product.body
+    - field.field.node.billing_product.feeds_item
+    - field.field.node.billing_product.field_billing_brand
+    - field.field.node.billing_product.field_billing_planned
+    - field.field.node.billing_product.field_billing_price
+    - field.field.node.billing_product.field_billing_product_name
+    - field.field.node.billing_product.field_billing_product_type
+    - field.field.node.billing_product.field_billing_tag
+    - node.type.billing_product
+  module:
+    - text
+    - user
+id: node.billing_product.default
+targetEntityType: node
+bundle: billing_product
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_billing_brand:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_billing_planned:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_billing_price:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_billing_product_name:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_billing_product_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_billing_tag:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true

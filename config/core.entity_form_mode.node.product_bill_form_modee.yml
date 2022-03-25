@@ -1,0 +1,10 @@
+uuid: 5e13f2d3-3532-475f-862c-7054d4a54658
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.product_bill_form_modee
+label: 'Product Bill Form'
+targetEntityType: node
+cache: true

@@ -1,0 +1,55 @@
+uuid: 71bc0e39-b04d-4231-9edf-fcdf8d38d544
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.billing_bill.body
+    - field.field.node.billing_bill.feeds_item
+    - field.field.node.billing_bill.field_billing_bill_tags
+    - field.field.node.billing_bill.field_billing_company
+    - field.field.node.billing_bill.field_billing_date
+    - field.field.node.billing_bill.field_billing_location
+    - field.field.node.billing_bill.field_billing_month
+    - field.field.node.billing_bill.field_billing_payment_type
+    - field.field.node.billing_bill.field_billing_products
+    - field.field.node.billing_bill.field_billing_year
+    - field.field.node.billing_bill.field_field_billing_verified
+    - node.type.billing_bill
+  module:
+    - text
+    - user
+id: node.billing_bill.teaser
+targetEntityType: node
+bundle: billing_bill
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_billing_bill_tags: true
+  field_billing_company: true
+  field_billing_date: true
+  field_billing_location: true
+  field_billing_month: true
+  field_billing_payment_type: true
+  field_billing_products: true
+  field_billing_year: true
+  field_field_billing_verified: true

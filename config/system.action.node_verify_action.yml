@@ -1,0 +1,13 @@
+uuid: 195807ee-abe7-4b4e-ab34-b30237ff514d
+langcode: en
+status: true
+dependencies:
+  module:
+    - alex_custom
+_core:
+  default_config_hash: gHWGpU7CemzdYWeIf59rQkdnPVK88K0psxaERgkoTmY
+id: node_verify_action
+label: 'Verify Bills'
+type: node
+plugin: node_verify_action
+configuration: {  }

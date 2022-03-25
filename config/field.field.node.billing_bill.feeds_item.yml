@@ -1,0 +1,23 @@
+uuid: ae20d041-8091-4746-b5ce-4aa4a73fdd34
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.billing_bill
+  module:
+    - feeds
+id: node.billing_bill.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: billing_bill
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

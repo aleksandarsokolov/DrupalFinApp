@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the gutenberg module.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_schema().
+ */
+function gutenberg_schema() {
+  $schema['file_managed_data'] = [
+    'description' => '',
+    'fields' => [
+      'fid' => [
+        'description' => 'The {file_managed}.fid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'data' => [
+        'type' => 'blob',
+        'size' => 'big',
+        'description' => 'A serialized configuration object data.',
+        'not null' => FALSE,
+      ],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Add file_managed_data table to database when updating from RC1.
+ */
+function gutenberg_update_8001() {
+  $spec = gutenberg_schema();
+  $schema = Database::getConnection()->schema();
+
+  if (!$schema->tableExists('file_managed_data')) {
+    $schema->createTable('file_managed_data', $spec['file_managed_data']);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function gutenberg_uninstall() {
+  // Delete text format settings.
+  Drupal::configFactory()->getEditable('filter.format.gutenberg')->delete();
+}

@@ -1,0 +1,8 @@
+uuid: 0d83643b-ed44-427a-b0d6-29d330bcb241
+langcode: en
+status: true
+dependencies: {  }
+name: Brand
+vid: billing_brand
+description: ''
+weight: 0

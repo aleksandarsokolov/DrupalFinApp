@@ -1,0 +1,23 @@
+uuid: 2651cd54-a866-4173-914c-1a861084031e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_planned
+    - node.type.billing_product
+id: node.billing_product.field_billing_planned
+field_name: field_billing_planned
+entity_type: node
+bundle: billing_product
+label: 'Planned?'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

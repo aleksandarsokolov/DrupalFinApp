@@ -1,0 +1,44 @@
+uuid: 4d17c58e-811c-4c16-97e9-08de0b6d9891
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.billing_product.body
+    - field.field.node.billing_product.feeds_item
+    - field.field.node.billing_product.field_billing_brand
+    - field.field.node.billing_product.field_billing_planned
+    - field.field.node.billing_product.field_billing_price
+    - field.field.node.billing_product.field_billing_product_name
+    - field.field.node.billing_product.field_billing_product_type
+    - field.field.node.billing_product.field_billing_tag
+    - node.type.billing_product
+  module:
+    - text
+    - user
+id: node.billing_product.teaser
+targetEntityType: node
+bundle: billing_product
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_billing_brand: true
+  field_billing_planned: true
+  field_billing_price: true
+  field_billing_product_name: true
+  field_billing_product_type: true
+  field_billing_tag: true

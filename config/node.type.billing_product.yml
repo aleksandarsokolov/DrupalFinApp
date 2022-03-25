@@ -1,0 +1,17 @@
+uuid: 3d0b1c5a-e18c-44b6-a7a3-7492bebc30e1
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Product
+type: billing_product
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

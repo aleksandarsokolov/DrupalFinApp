@@ -1,0 +1,13 @@
+uuid: a0626279-eb44-467e-883e-d3873af1548d
+langcode: en
+status: true
+dependencies:
+  module:
+    - alex_custom
+_core:
+  default_config_hash: WCJoyKc0jQnO9_Nb27uJl5Ccz3CFvg0-DEJMe-mx8iE
+id: node_unverify_action
+label: 'Unverify Bills'
+type: node
+plugin: node_unverify_action
+configuration: {  }

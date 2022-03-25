@@ -1,0 +1,93 @@
+uuid: e36fbdc1-db60-4209-a62a-e491ed9aa21b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.billing_product.body
+    - field.field.node.billing_product.feeds_item
+    - field.field.node.billing_product.field_billing_brand
+    - field.field.node.billing_product.field_billing_planned
+    - field.field.node.billing_product.field_billing_price
+    - field.field.node.billing_product.field_billing_product_name
+    - field.field.node.billing_product.field_billing_product_type
+    - field.field.node.billing_product.field_billing_tag
+    - node.type.billing_product
+  module:
+    - content_moderation
+id: node.billing_product.default
+targetEntityType: node
+bundle: billing_product
+mode: default
+content:
+  field_billing_brand:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_planned:
+    type: options_buttons
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_billing_price:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_product_name:
+    type: entity_reference_autocomplete
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_product_type:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_billing_tag:
+    type: entity_reference_autocomplete
+    weight: 6
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  body: true
+  created: true
+  feeds_item: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

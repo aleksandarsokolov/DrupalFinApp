@@ -1,0 +1,141 @@
+gutenberg.media.upload:
+  path: '/editor/media/upload/{editor}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::upload'
+  requirements:
+    _entity_access: 'editor.use'
+    _permission: 'gutenberg administer'
+    _method: 'POST'
+gutenberg.media.load:
+  path: '/editor/media/load/{file}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::load'
+    parameters:
+      file:
+        type: entity:file
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.media.load_media:
+  path: '/editor/media/load-media/{media}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::loadMedia'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.media.dialog:
+  path: '/editor/media/dialog'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::dialog'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.media.render:
+  path: '/editor/media/render/{media}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::render'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.blocks.load:
+  path: '/editor/blocks/load_by_type/{content_type}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\BlocksController::loadByType'
+    content_type: 'none'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.blocks.load_single:
+  path: '/editor/blocks/load/{plugin_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\BlocksController::loadById'
+    # parameters:
+    #   block:
+    #     type: entity:block
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.reusable_blocks.create:
+  path: '/editor/reusable-blocks'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::save'
+  methods: 'POST'
+  requirements:
+    _permission: 'gutenberg administer'
+gutenberg.reusable_blocks.update:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::save'
+  methods: 'PUT'
+  requirements:
+    _custom_access: '\Drupal\gutenberg\Controller\ReusableBlocksController::access'
+gutenberg.reusable_blocks.delete:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::delete'
+  methods: 'DELETE'
+  requirements:
+    _custom_access: '\Drupal\gutenberg\Controller\ReusableBlocksController::access'
+gutenberg.reusable_blocks.load:
+  path: '/editor/reusable-blocks'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::load'
+  methods: 'GET'
+  requirements:
+    _permission: 'gutenberg administer'
+gutenberg.reusable_blocks.load_single:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::load'
+  methods: 'GET'
+  requirements:
+    _custom_access: '\Drupal\gutenberg\Controller\ReusableBlocksController::access'
+gutenberg.oembed:
+  path: '/editor/oembed'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\OEmbedProxyUrlController::request'
+  methods: 'GET'
+  requirements:
+    _permission: 'gutenberg administer'
+gutenberg.content.search:
+  path: '/editor/search'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\SearchController::search'
+  methods: 'GET'
+  requirements:
+    _permission: 'gutenberg administer'
+gutenberg.media.search:
+  path: '/editor/media/search/{type}/{search}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::search'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.media.update_data:
+  path: '/editor/media/update_data/{fid}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::updateData'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'POST'
+gutenberg.media.autocomplete:
+  path: '/editor/media/autocomplete'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\MediaController::autocomplete'
+  requirements:
+    _permission: 'gutenberg administer'
+    _method: 'GET'
+gutenberg.media_edit_form:
+  path: '/gutenberg/form/media_edit/{media}'
+  options:
+    parameters:
+      media:
+        type: entity:media
+  defaults:
+    _form: '\Drupal\gutenberg\Form\MediaEditForm'
+    _title: 'MediaEditForm'
+    parameters:
+      file:
+        type: entity:media
+  requirements:
+    _permission: 'gutenberg administer'

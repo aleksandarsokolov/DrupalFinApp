@@ -1,0 +1,86 @@
+uuid: b04b39b8-7a7c-4ab1-97b7-60dd74f75f6a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.billing_bill.body
+    - field.field.node.billing_bill.feeds_item
+    - field.field.node.billing_bill.field_billing_bill_tags
+    - field.field.node.billing_bill.field_billing_company
+    - field.field.node.billing_bill.field_billing_date
+    - field.field.node.billing_bill.field_billing_location
+    - field.field.node.billing_bill.field_billing_month
+    - field.field.node.billing_bill.field_billing_payment_type
+    - field.field.node.billing_bill.field_billing_products
+    - field.field.node.billing_bill.field_billing_year
+    - field.field.node.billing_bill.field_field_billing_verified
+    - node.type.billing_bill
+  module:
+    - datetime
+    - layout_builder
+    - options
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.billing_bill.default
+targetEntityType: node
+bundle: billing_bill
+mode: default
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: left
+  field_billing_company:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_billing_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: America/Los_Angeles
+      format_type: html_date
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_billing_location:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_billing_payment_type:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_field_billing_verified:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+hidden:
+  body: true
+  feeds_item: true
+  field_billing_bill_tags: true
+  field_billing_month: true
+  field_billing_products: true
+  field_billing_year: true
+  links: true

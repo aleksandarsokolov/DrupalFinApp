@@ -1,0 +1,20 @@
+uuid: 4e3d85da-6fa0-41fa-a7f9-7c944d26ea1c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_billing_location
+field_name: field_billing_location
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

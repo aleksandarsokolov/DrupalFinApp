@@ -1,0 +1,29 @@
+uuid: 47922cf0-d653-48f4-8190-1943df84f767
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_company
+    - node.type.billing_bill
+    - taxonomy.vocabulary.company
+id: node.billing_bill.field_billing_company
+field_name: field_billing_company
+entity_type: node
+bundle: billing_bill
+label: Company
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company: company
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

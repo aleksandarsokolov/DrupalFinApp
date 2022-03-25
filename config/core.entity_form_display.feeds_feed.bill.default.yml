@@ -1,0 +1,36 @@
+uuid: 5935e9dc-10f1-48d6-ae39-0980db3faec5
+langcode: en
+status: true
+dependencies:
+  config:
+    - feeds.feed_type.bill
+id: feeds_feed.bill.default
+targetEntityType: feeds_feed
+bundle: bill
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

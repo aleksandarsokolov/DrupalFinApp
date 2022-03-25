@@ -1,0 +1,31 @@
+uuid: 71d5f4dc-0f1c-4dad-a305-8d82c5f00672
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.billing_product_type.field_billing_product_type_icon
+    - taxonomy.vocabulary.billing_product_type
+  module:
+    - fontawesome
+    - text
+id: taxonomy_term.billing_product_type.default
+targetEntityType: taxonomy_term
+bundle: billing_product_type
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_billing_product_type_icon:
+    type: fontawesome_icon_formatter
+    label: hidden
+    settings:
+      layers: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

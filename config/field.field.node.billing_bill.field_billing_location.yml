@@ -1,0 +1,29 @@
+uuid: 6bf1d66e-c9a0-4d41-b442-22a6e080b688
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_location
+    - node.type.billing_bill
+    - taxonomy.vocabulary.billing_location
+id: node.billing_bill.field_billing_location
+field_name: field_billing_location
+entity_type: node
+bundle: billing_bill
+label: Location
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      billing_location: billing_location
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

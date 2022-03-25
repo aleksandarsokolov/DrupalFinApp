@@ -1,0 +1,8 @@
+uuid: fca426fb-3e9c-49e1-8dd3-95bdc0d85486
+langcode: en
+status: true
+dependencies: {  }
+name: Product
+vid: product_taxonomy
+description: ''
+weight: 0

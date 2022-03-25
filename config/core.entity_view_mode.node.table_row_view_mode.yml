@@ -1,0 +1,10 @@
+uuid: 12fca147-2d18-44fa-bb98-00d5d1046dc9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.table_row_view_mode
+label: 'Table Row View Mode'
+targetEntityType: node
+cache: true

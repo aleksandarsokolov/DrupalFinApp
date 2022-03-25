@@ -1,0 +1,18 @@
+uuid: d1c1a10c-2343-4701-aa61-cb16b6339ba4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.billing_bill
+id: node.billing_bill.title
+field_name: title
+entity_type: node
+bundle: billing_bill
+label: Bill
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

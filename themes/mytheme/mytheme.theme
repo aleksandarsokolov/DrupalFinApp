@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Bootstrap sub-theme.
+ *
+ * Place your custom PHP code in this file.
+ */
+
+/**
+ * Preprocess variables for html templates.
+ * @param $variables
+ */
+
+
+ function mytheme_preprocess_node(&$variables){
+     
+  $node = $variables['node'];
+  $bundle = $variables['node']->bundle();
+  $somevar = "somevar";
+
+ }
+

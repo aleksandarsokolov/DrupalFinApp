@@ -1,0 +1,8 @@
+uuid: 4a808e21-e15d-4f33-a33a-2b3652c74271
+langcode: en
+status: true
+dependencies: {  }
+name: 'Product Type'
+vid: billing_product_type
+description: ''
+weight: 0

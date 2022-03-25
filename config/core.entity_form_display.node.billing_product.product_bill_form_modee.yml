@@ -1,0 +1,88 @@
+uuid: d9150b79-528f-43c7-a39e-1ef32501bfe6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.product_bill_form_modee
+    - field.field.node.billing_product.body
+    - field.field.node.billing_product.feeds_item
+    - field.field.node.billing_product.field_billing_brand
+    - field.field.node.billing_product.field_billing_planned
+    - field.field.node.billing_product.field_billing_price
+    - field.field.node.billing_product.field_billing_product_name
+    - field.field.node.billing_product.field_billing_product_type
+    - field.field.node.billing_product.field_billing_tag
+    - node.type.billing_product
+  module:
+    - content_moderation
+id: node.billing_product.product_bill_form_modee
+targetEntityType: node
+bundle: billing_product
+mode: product_bill_form_modee
+content:
+  field_billing_brand:
+    type: entity_reference_autocomplete
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_planned:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_billing_price:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_product_name:
+    type: entity_reference_autocomplete
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_product_type:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_billing_tag:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  created: true
+  feeds_item: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  uid: true

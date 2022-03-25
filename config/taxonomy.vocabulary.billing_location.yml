@@ -1,0 +1,8 @@
+uuid: b50ff004-5706-4b7c-9706-866936dbd7b0
+langcode: en
+status: true
+dependencies: {  }
+name: Location
+vid: billing_location
+description: ''
+weight: 0

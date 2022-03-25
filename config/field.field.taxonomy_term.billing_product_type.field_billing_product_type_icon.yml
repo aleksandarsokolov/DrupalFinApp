@@ -1,0 +1,21 @@
+uuid: ef4f8ea3-705a-4110-8ef5-429fca2dbf87
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_billing_product_type_icon
+    - taxonomy.vocabulary.billing_product_type
+  module:
+    - fontawesome
+id: taxonomy_term.billing_product_type.field_billing_product_type_icon
+field_name: field_billing_product_type_icon
+entity_type: taxonomy_term
+bundle: billing_product_type
+label: Icon
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: fontawesome_icon

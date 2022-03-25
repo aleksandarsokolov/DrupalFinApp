@@ -1,0 +1,18 @@
+uuid: 8e6a4966-23f7-4ba1-8f28-790d1c24bbbf
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_field_billing_verified
+field_name: field_field_billing_verified
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

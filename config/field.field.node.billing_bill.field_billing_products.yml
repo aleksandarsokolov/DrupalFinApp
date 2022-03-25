@@ -1,0 +1,29 @@
+uuid: 9dce41e1-0e17-469e-a254-fee6d6f53a55
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_products
+    - node.type.billing_bill
+    - node.type.billing_product
+id: node.billing_bill.field_billing_products
+field_name: field_billing_products
+entity_type: node
+bundle: billing_bill
+label: Products
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      billing_product: billing_product
+    sort:
+      field: field_billing_product_type
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

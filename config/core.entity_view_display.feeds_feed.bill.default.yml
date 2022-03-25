@@ -1,0 +1,42 @@
+uuid: 5d1584a0-bd01-4434-a448-e51e6c913595
+langcode: en
+status: true
+dependencies:
+  config:
+    - feeds.feed_type.bill
+  module:
+    - feeds
+    - user
+id: feeds_feed.bill.default
+targetEntityType: feeds_feed
+bundle: bill
+mode: default
+content:
+  imported:
+    type: timestamp_ago
+    label: inline
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 2
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  next:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  source:
+    type: feeds_uri_link
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: -3
+    region: content
+hidden: {  }

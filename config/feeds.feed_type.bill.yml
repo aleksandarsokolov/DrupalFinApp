@@ -1,0 +1,147 @@
+uuid: 5bfd6c92-689d-4d4c-abbe-6e1577de0cf2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.node.billing_bill.title
+    - field.field.node.billing_bill.field_billing_company
+    - field.field.node.billing_bill.field_billing_date
+    - field.field.node.billing_bill.field_billing_location
+    - field.field.node.billing_bill.field_billing_month
+    - field.field.node.billing_bill.field_billing_payment_type
+    - field.field.node.billing_bill.field_billing_products
+    - field.field.node.billing_bill.field_billing_year
+    - node.type.billing_bill
+  module:
+    - node
+label: 'Bill Feed Type'
+id: bill
+description: ''
+help: ''
+import_period: -1
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: false
+  use_pubsubhubbub: false
+  always_download: false
+  fallback_hub: ''
+  request_timeout: 30
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: billing_bill
+  langcode: en
+  update_existing: 0
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  expire: -1
+  owner_feed_author: true
+  owner_id: 0
+custom_sources:
+  '':
+    value: ''
+    label: ''
+    machine_name: ''
+  bill:
+    value: Bill
+    label: Bill
+    machine_name: bill
+  bill_feed_title:
+    value: Bill
+    label: Bill
+    machine_name: bill_feed_title
+  bill_feed_location:
+    value: Location
+    label: Location
+    machine_name: bill_feed_location
+  bill_feed_company:
+    value: Company
+    label: Company
+    machine_name: bill_feed_company
+  bill_feed_date:
+    value: Date
+    label: Date
+    machine_name: bill_feed_date
+  bill_feed_month:
+    value: Month
+    label: Month
+    machine_name: bill_feed_month
+  bill_feed_year:
+    value: Year
+    label: Year
+    machine_name: bill_feed_year
+  bill_feed_paymenttype:
+    value: PaymentType
+    label: PaymentType
+    machine_name: bill_feed_paymenttype
+  bill_feed_productid:
+    value: ProductID
+    label: ProductID
+    machine_name: bill_feed_productid
+mappings:
+  -
+    target: title
+    map:
+      value: bill_feed_title
+    settings:
+      language: en
+    unique:
+      value: '1'
+  -
+    target: field_billing_location
+    map:
+      target_id: bill_feed_location
+    settings:
+      language: en
+      reference_by: name
+      autocreate: '1'
+  -
+    target: field_billing_company
+    map:
+      target_id: bill_feed_company
+    settings:
+      language: ''
+      reference_by: name
+      autocreate: '1'
+  -
+    target: field_billing_date
+    map:
+      value: bill_feed_date
+    settings:
+      language: en
+      timezone: America/Los_Angeles
+  -
+    target: field_billing_month
+    map:
+      value: bill_feed_month
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: field_billing_year
+    map:
+      value: bill_feed_year
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: field_billing_payment_type
+    map:
+      value: bill_feed_paymenttype
+    settings:
+      language: en
+  -
+    target: field_billing_products
+    map:
+      target_id: bill_feed_productid
+    settings:
+      language: ''
+      reference_by: title
+      feeds_item: guid
+      autocreate: '1'

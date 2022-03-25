@@ -1,0 +1,29 @@
+uuid: d20f064a-9b60-41de-ab22-0dd3c7edc9de
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_bill_tags
+    - node.type.billing_bill
+    - taxonomy.vocabulary.tags
+id: node.billing_bill.field_billing_bill_tags
+field_name: field_billing_bill_tags
+entity_type: node
+bundle: billing_bill
+label: Tags
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

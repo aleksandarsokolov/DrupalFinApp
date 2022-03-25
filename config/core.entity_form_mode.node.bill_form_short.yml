@@ -1,0 +1,10 @@
+uuid: 264dfe4b-669b-4e08-8f2b-2b2218c6ad4e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.bill_form_short
+label: 'Bill Form Short'
+targetEntityType: node
+cache: true

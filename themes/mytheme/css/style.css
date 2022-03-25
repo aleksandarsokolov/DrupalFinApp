@@ -1,0 +1,70 @@
+js-form-type-radio {
+    float: left;
+}
+
+.js-form-type-radio {
+    float: left;
+    margin-right: 15px;
+}
+
+
+.js-form-type-radio {
+    float: left;
+    margin-right: 15px;
+}
+
+fieldset:not(.fieldgroup) {
+    background-color: #dedede;
+}
+
+.month-caption {
+    margin: 20px;
+    text-align: center;
+    font-size: 20px;
+    background-color: #f7f7f7;
+}
+
+.month-subcaption {
+    margin: 10px 20px;
+}
+
+
+.view-display-id-block_year_months_totals {
+    padding-bottom:30px;
+}
+
+.view-display-id-block_year_months_totals .view-content {
+    padding-left: 50px;
+}
+
+.block-views {
+    padding:10px;
+}
+
+
+input[name=product], input[name=brand], input[name=company], input[name=location], input[name=product_tag] {
+    width: 130px;
+}
+
+tfoot {
+    font-weight: bold;
+}
+
+.view-display-id-block_products_by_month_type table th:first-child,
+.view-display-id-block_products_by_month_type table td:first-child {
+    width: 30px;
+}
+
+.view-display-id-page_bills table th:nth-child(2),
+.view-display-id-page_bills table td:nth-child(2) {
+    width: 15px;
+}
+
+.verified-bill-tr {
+    background-color: mediumseagreen;
+    color: white;
+}
+
+.verified-bill-tr:hover {
+    color:black;
+}

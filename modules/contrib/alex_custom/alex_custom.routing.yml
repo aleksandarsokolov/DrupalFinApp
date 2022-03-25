@@ -1,0 +1,7 @@
+alex_custom.loadicons:
+  path: '/loadbills'
+  defaults:
+    _controller: '\Drupal\alex_custom\Controller\BillsController::loadbills'
+    _title: 'Load Bills and Products'
+  requirements:
+    _permission: 'access content'

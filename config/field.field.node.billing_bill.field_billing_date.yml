@@ -1,0 +1,24 @@
+uuid: 02fd7d1e-f189-4ed0-a22a-cc7f30807de3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_date
+    - node.type.billing_bill
+  module:
+    - datetime
+id: node.billing_bill.field_billing_date
+field_name: field_billing_date
+entity_type: node
+bundle: billing_bill
+label: Date
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

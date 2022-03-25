@@ -1,0 +1,23 @@
+uuid: 086c3da3-d98f-47f7-8826-ff0ecaf734b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_price
+    - node.type.billing_product
+id: node.billing_product.field_billing_price
+field_name: field_billing_price
+entity_type: node
+bundle: billing_product
+label: Price
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: $
+  suffix: ''
+field_type: decimal

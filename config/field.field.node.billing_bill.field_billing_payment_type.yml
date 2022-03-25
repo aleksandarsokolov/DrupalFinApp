@@ -1,0 +1,23 @@
+uuid: d5f2ad0c-eb74-4bca-94b8-f61c5396d151
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_payment_type
+    - node.type.billing_bill
+  module:
+    - options
+id: node.billing_bill.field_billing_payment_type
+field_name: field_billing_payment_type
+entity_type: node
+bundle: billing_bill
+label: 'Payment Type'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: '0'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

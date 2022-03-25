@@ -1,0 +1,123 @@
+uuid: d778bd55-85b0-4717-9110-e21cba1ed040
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.product_bill_form_modee
+    - field.field.node.billing_bill.body
+    - field.field.node.billing_bill.feeds_item
+    - field.field.node.billing_bill.field_billing_bill_tags
+    - field.field.node.billing_bill.field_billing_company
+    - field.field.node.billing_bill.field_billing_date
+    - field.field.node.billing_bill.field_billing_location
+    - field.field.node.billing_bill.field_billing_month
+    - field.field.node.billing_bill.field_billing_payment_type
+    - field.field.node.billing_bill.field_billing_products
+    - field.field.node.billing_bill.field_billing_year
+    - field.field.node.billing_bill.field_field_billing_verified
+    - node.type.billing_bill
+  module:
+    - datetime
+    - entity_browser_entity_form
+    - inline_entity_form
+    - text
+id: node.billing_bill.default
+targetEntityType: node
+bundle: billing_bill
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 6
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  field_billing_bill_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_company:
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_billing_location:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+  field_billing_payment_type:
+    type: options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_billing_products:
+    type: inline_entity_form_complex
+    weight: 4
+    region: content
+    settings:
+      form_mode: product_bill_form_modee
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: false
+      match_operator: CONTAINS
+      allow_duplicate: true
+      collapsible: false
+      collapsed: true
+      revision: false
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: products
+  field_field_billing_verified:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  feeds_item: true
+  field_billing_month: true
+  field_billing_year: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  uid: true

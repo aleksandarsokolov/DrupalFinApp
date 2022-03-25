@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @file
+ * Contains ssis_redirect.module.
+ */
+
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+// use Drupal\redirect\Entity\Redirect;
+use Drupal\Core\Entity\EntityInterface;
+// use Drupal\redirect\RedirectRepository;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_help().
+ */
+function alex_custom_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the alex_custom module.
+    case 'help.page.alex_custom':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module for drupal websites to change the redirect code for external URL redirects.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_presave().
+ */
+// function alex_custom_redirect_presave(Redirect $redirect){
+  
+//   $statusCode  = $redirect->getStatusCode();
+//   $redirectUrl = $redirect->getRedirectUrl();
+//   if($redirectUrl->isExternal()) {
+//     $redirect->setStatusCode(302);
+//   } else {
+//     $redirect->setStatusCode(301);
+//   }
+// }
+
+function alex_custom_node_presave(EntityInterface $node) {
+  $entity = $node->bundle();
+ switch ($node->bundle()) {
+    // Here you modify only your day content type
+    case 'billing_bill':
+      // Setting the title with the value of field_date.
+      $some = $node->field_billing_date;
+
+
+      // Get Date
+      $billdatestring = $node->field_billing_date->getString();
+      $date =  date_create($billdatestring);
+      $billday = (int)$date->format('d');
+      $billmonth = (int)$date->format('m');
+      $billyear = (int)$date->format('Y');
+      
+      // Get PaymentType
+      $billpayment = (int)$node->field_billing_payment_type->getString();
+
+      // If PaymentType = CreditCard and Day > 22
+      if($billpayment == 1 && $billday > 22) {
+        $billmonth = $billmonth + 1;
+      }
+
+      // Get Company
+      $billcompany = "";
+      if($node->field_billing_company->getString()) {
+        $billcompany = \Drupal\taxonomy\Entity\Term::load($node->field_billing_company->getString())->get('name')->value;
+      }
+
+      // Get Location
+      $billlocation = "";
+      if($node->field_billing_location->getString()){
+        $billlocation = \Drupal\taxonomy\Entity\Term::load($node->field_billing_location->getString())->get('name')->value;      
+      }
+      
+      // Update the Month
+      $node->set('field_billing_month', $billmonth);
+      // Update the Year
+      $node->set('field_billing_year', $billyear);
+      // Update the Title
+      $node->setTitle($billdatestring . ' ' . $billcompany . ' ' . $billlocation);
+     break;
+    case 'billing_product':
+
+      // Get ProductName
+      $productname = \Drupal\taxonomy\Entity\Term::load($node->field_billing_product_name->getString())->get('name')->value;
+
+      // Update the Title
+      $node->setTitle($productname);
+      
+     break;
+
+     
+  }
+}
+
+
+
+
+// /**
+//  * Implements hook_install().
+//  */
+// function alex_custom_install() {
+
+  
+// }
+
+
+

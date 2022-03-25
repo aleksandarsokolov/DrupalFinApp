@@ -1,0 +1,23 @@
+uuid: e28a1619-dd0d-4fe4-8af9-21acf6924795
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_year
+    - node.type.billing_bill
+id: node.billing_bill.field_billing_year
+field_name: field_billing_year
+entity_type: node
+bundle: billing_bill
+label: Year
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 2018
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

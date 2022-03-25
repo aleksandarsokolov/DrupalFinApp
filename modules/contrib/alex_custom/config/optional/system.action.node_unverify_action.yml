@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node_unverify_action
+label: 'Unverify Bills'
+type: node
+plugin: node_unverify_action
+configuration: {  }

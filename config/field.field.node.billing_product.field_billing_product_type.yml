@@ -1,0 +1,33 @@
+uuid: c673c001-43ed-48a7-8ba6-946c22914318
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_billing_product_type
+    - node.type.billing_product
+    - taxonomy.vocabulary.billing_product_type
+  content:
+    - 'taxonomy_term:billing_product_type:b47ad58a-10e9-4b53-a922-d25afe691396'
+id: node.billing_product.field_billing_product_type
+field_name: field_billing_product_type
+entity_type: node
+bundle: billing_product
+label: 'Product Type'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    target_uuid: b47ad58a-10e9-4b53-a922-d25afe691396
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      billing_product_type: billing_product_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

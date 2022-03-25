@@ -1,0 +1,17 @@
+uuid: e25fae90-2b7b-4ba2-a7ff-3ca7ce812610
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Bill
+type: billing_bill
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false
