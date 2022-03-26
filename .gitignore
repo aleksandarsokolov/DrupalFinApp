@@ -43,3 +43,4 @@ sites/simpletest
 
 *.sql
 *.sql.gz
+/.gitattributes
