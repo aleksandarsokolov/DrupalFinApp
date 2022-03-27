@@ -3469,69 +3469,6 @@ display:
     display_options:
       title: 'Donut Chart by Product Type'
       fields:
-        field_billing_product_type:
-          id: field_billing_product_type
-          table: node__field_billing_product_type
-          field: field_billing_product_type
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
         name:
           id: name
           table: taxonomy_term_field_data
@@ -3662,7 +3599,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: ','
           field_api_classes: false
           set_precision: false
           precision: 0
@@ -3796,10 +3733,10 @@ display:
         options:
           grouping:
             -
-              field: field_billing_product_type
+              field: nothing
               rendered: true
               rendered_strip: false
-          title: 'Donut Chart'
+          title: 'Monthly Costs by Category'
           xaxis_title: 'Horizontal Title'
           yaxis_title: 'Vertical Title'
           allow_advanced_rendering: 0
@@ -3809,13 +3746,13 @@ display:
           fields:
             table: ''
           data_fields:
-            field_billing_product_type: 0
             name: 0
             field_billing_price: field_billing_price
+            nothing: 0
           field_colors:
-            field_billing_product_type: '#2f7ed8'
             name: '#2f7ed8'
             field_billing_price: '#0d233a'
+            nothing: '#8bbc21'
           title_position: out
           tooltips: 'TRUE'
           data_labels: 'TRUE'
@@ -3841,7 +3778,7 @@ display:
           yaxis_max: '100'
           yaxis_prefix: $
           yaxis_suffix: ''
-          yaxis_decimal_count: ''
+          yaxis_decimal_count: '2'
           yaxis_labels_rotation: '0'
       row:
         type: fields
@@ -3907,8 +3844,7 @@ display:
         - url
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_billing_product_type'
+      tags: {  }
   chart_unplanned_product_type:
     id: chart_unplanned_product_type
     display_title: 'Chart Unplanned Products By Month By Type'
@@ -4288,8 +4224,8 @@ display:
               rendered: true
               rendered_strip: false
           title: 'Unplanned by Category'
-          xaxis_title: 'Horizontal Title'
-          yaxis_title: 'Vertical Title'
+          xaxis_title: Category
+          yaxis_title: Amount
           allow_advanced_rendering: 0
           library: highcharts
           type: column
