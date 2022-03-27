@@ -1,0 +1,79 @@
+uuid: 1944c9b5-7f5a-4f4d-9c13-8f79486f6447
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+    - media.type.audio
+    - media.type.document
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.article
+    - node.type.billing_bill
+    - node.type.billing_product
+    - node.type.page
+    - taxonomy.vocabulary.billing_brand
+    - taxonomy.vocabulary.billing_location
+    - taxonomy.vocabulary.billing_product_type
+    - taxonomy.vocabulary.company
+    - taxonomy.vocabulary.product_taxonomy
+    - taxonomy.vocabulary.tags
+  module:
+    - filter
+    - media
+    - node
+    - taxonomy
+id: role_data_entry
+label: 'Data Entry'
+weight: 3
+is_admin: null
+permissions:
+  - 'access media overview'
+  - 'access taxonomy overview'
+  - 'administer taxonomy'
+  - 'create article content'
+  - 'create audio media'
+  - 'create billing_bill content'
+  - 'create billing_product content'
+  - 'create document media'
+  - 'create image media'
+  - 'create media'
+  - 'create page content'
+  - 'create remote_video media'
+  - 'create terms in billing_brand'
+  - 'create terms in billing_location'
+  - 'create terms in billing_product_type'
+  - 'create terms in company'
+  - 'create terms in product_taxonomy'
+  - 'create terms in tags'
+  - 'create video media'
+  - 'edit any audio media'
+  - 'edit any billing_bill content'
+  - 'edit any billing_product content'
+  - 'edit any document media'
+  - 'edit any image media'
+  - 'edit any remote_video media'
+  - 'edit any video media'
+  - 'edit own audio media'
+  - 'edit own billing_bill content'
+  - 'edit own billing_product content'
+  - 'edit own document media'
+  - 'edit own image media'
+  - 'edit own remote_video media'
+  - 'edit own video media'
+  - 'edit terms in billing_brand'
+  - 'edit terms in billing_location'
+  - 'edit terms in billing_product_type'
+  - 'edit terms in company'
+  - 'edit terms in product_taxonomy'
+  - 'edit terms in tags'
+  - 'revert billing_bill revisions'
+  - 'revert billing_product revisions'
+  - 'update any media'
+  - 'update media'
+  - 'use text format full_html'
+  - 'view all media revisions'
+  - 'view billing_bill revisions'
+  - 'view billing_product revisions'
+  - 'view own unpublished media'
