@@ -423,7 +423,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set month =  \"N/A\" %}\r\n    {% if field_billing_month__value == 1 %}\r\n        {% set month =  \"January\" %}\r\n\t{% elseif field_billing_month__value == 2 %}\r\n        {% set month =  \"February\" %}\r\n\t{% elseif field_billing_month__value == 3 %}\r\n        {% set month =  'March' %}\r\n\t{% elseif field_billing_month__value == 4 %}\r\n        {% set month =  \"April\" %}\r\n\t{% elseif field_billing_month__value == 5 %}\r\n        {% set month =  \"May\" %}\r\n\t{% elseif field_billing_month__value == 6 %}\r\n        {% set month =  \"June\" %}\r\n\t{% elseif field_billing_month__value == 7 %}\r\n        {% set month =  \"July\" %}\r\n\t{% elseif field_billing_month__value == 8 %}\r\n        {% set month =  'August' %}\r\n\t{% elseif field_billing_month__value == 9 %}\r\n        {% set month =  \"September\" %}\r\n\t{% elseif field_billing_month == 10 %}\r\n        {% set month =  \"October\" %}\r\n\t{% elseif field_billing_month__value == 11 %}\r\n        {% set month =  \"November\" %}\r\n\t{% elseif field_billing_month__value == 12 %}\r\n        {% set month =  \"December\" %}\r\n{% else %}\r\n    {% set month =  \"N/A\" %}\r\n{% endif %}\r\n<h1>{{month }}</h1>"
+            text: "{% set month =  \"N/A\" %}\r\n    {% if field_billing_month__value == 1 %}\r\n        {% set month =  \"January\" %}\r\n\t{% elseif field_billing_month__value == 2 %}\r\n        {% set month =  \"February\" %}\r\n\t{% elseif field_billing_month__value == 3 %}\r\n        {% set month =  'March' %}\r\n\t{% elseif field_billing_month__value == 4 %}\r\n        {% set month =  \"April\" %}\r\n\t{% elseif field_billing_month__value == 5 %}\r\n        {% set month =  \"May\" %}\r\n\t{% elseif field_billing_month__value == 6 %}\r\n        {% set month =  \"June\" %}\r\n\t{% elseif field_billing_month__value == 7 %}\r\n        {% set month =  \"July\" %}\r\n\t{% elseif field_billing_month__value == 8 %}\r\n        {% set month =  'August' %}\r\n\t{% elseif field_billing_month__value == 9 %}\r\n        {% set month =  \"September\" %}\r\n\t{% elseif field_billing_month__value == 10 %}\r\n        {% set month =  \"October\" %}\r\n\t{% elseif field_billing_month__value == 11 %}\r\n        {% set month =  \"November\" %}\r\n\t{% elseif field_billing_month__value == 12 %}\r\n        {% set month =  \"December\" %}\r\n{% else %}\r\n    {% set month =  \"N/A\" %}\r\n{% endif %}\r\n<h1>{{month }}</h1>"
             make_link: true
             path: '/monthly-report?month={{ field_billing_month }}&year={{ field_billing_year }}'
             absolute: false
@@ -1256,7 +1256,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set month =  \"N/A\" %}\r\n    {% if field_billing_month__value == 1 %}\r\n        {% set month =  \"January\" %}\r\n\t{% elseif field_billing_month__value == 2 %}\r\n        {% set month =  \"February\" %}\r\n\t{% elseif field_billing_month__value == 3 %}\r\n        {% set month =  'March' %}\r\n\t{% elseif field_billing_month__value == 4 %}\r\n        {% set month =  \"April\" %}\r\n\t{% elseif field_billing_month__value == 5 %}\r\n        {% set month =  \"May\" %}\r\n\t{% elseif field_billing_month__value == 6 %}\r\n        {% set month =  \"June\" %}\r\n\t{% elseif field_billing_month__value == 7 %}\r\n        {% set month =  \"July\" %}\r\n\t{% elseif field_billing_month__value == 8 %}\r\n        {% set month =  'August' %}\r\n\t{% elseif field_billing_month__value == 9 %}\r\n        {% set month =  \"September\" %}\r\n\t{% elseif field_billing_month == 10 %}\r\n        {% set month =  \"October\" %}\r\n\t{% elseif field_billing_month__value == 11 %}\r\n        {% set month =  \"November\" %}\r\n\t{% elseif field_billing_month__value == 12 %}\r\n        {% set month =  \"December\" %}\r\n{% else %}\r\n    {% set month =  \"N/A\" %}\r\n{% endif %}\r\n<h1>{{month }}</h1>"
+            text: "{% set month =  \"N/A\" %}\r\n    {% if field_billing_month__value == 1 %}\r\n        {% set month =  \"January\" %}\r\n\t{% elseif field_billing_month__value == 2 %}\r\n        {% set month =  \"February\" %}\r\n\t{% elseif field_billing_month__value == 3 %}\r\n        {% set month =  'March' %}\r\n\t{% elseif field_billing_month__value == 4 %}\r\n        {% set month =  \"April\" %}\r\n\t{% elseif field_billing_month__value == 5 %}\r\n        {% set month =  \"May\" %}\r\n\t{% elseif field_billing_month__value == 6 %}\r\n        {% set month =  \"June\" %}\r\n\t{% elseif field_billing_month__value == 7 %}\r\n        {% set month =  \"July\" %}\r\n\t{% elseif field_billing_month__value == 8 %}\r\n        {% set month =  'August' %}\r\n\t{% elseif field_billing_month__value == 9 %}\r\n        {% set month =  \"September\" %}\r\n\t{% elseif field_billing_month__value == 10 %}\r\n        {% set month =  \"October\" %}\r\n\t{% elseif field_billing_month__value == 11 %}\r\n        {% set month =  \"November\" %}\r\n\t{% elseif field_billing_month__value == 12 %}\r\n        {% set month =  \"December\" %}\r\n{% else %}\r\n    {% set month =  \"N/A\" %}\r\n{% endif %}\r\n<h1>{{month }}</h1>"
             make_link: true
             path: '/monthly-report?month={{ field_billing_month }}&year={{ field_billing_year }}'
             absolute: false
@@ -1377,6 +1377,11 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: $
           suffix: ''
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 12
       style:
         type: chart
         options:

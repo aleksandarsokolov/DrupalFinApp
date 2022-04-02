@@ -9,7 +9,7 @@ _core:
 id: mytheme_secondary_local_tasks
 theme: mytheme
 region: pre_content
-weight: -5
+weight: -3
 provider: null
 plugin: local_tasks_block
 settings:
