@@ -68,3 +68,40 @@ tfoot {
 .verified-bill-tr:hover {
     color:black;
 }
+
+
+
+ul.menu {
+    margin-bottom: 0;
+    list-style-type: none;
+    overflow: hidden;
+    background-color: #ebebeb;
+    margin-left: -2.1rem !important;
+    margin-right: -2.1rem !important;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: block;
+}
+
+ul.menu li {
+    list-style: none;
+    float: left;
+    width: auto;
+    height: auto;
+    margin: 0 0 -1px;
+    text-align: center;
+    padding-top: 0px !important;
+}
+
+ul.menu li.menu-item a.is-active {
+    z-index: 15;
+    color: #004f80;
+    border-color: #a6a6a6;
+    border-radius: 4px 0 0 0;
+    background-color: #fff;
+}
+
+ul.menu li.menu-item a {
+    display: block;
+    padding: 7px 2em 7px 2em;
+}
