@@ -13,7 +13,7 @@ dependencies:
 id: mytheme_mainnavigation
 theme: mytheme
 region: header
-weight: -3
+weight: -2
 provider: null
 plugin: 'system_menu_block:main'
 settings:
@@ -21,9 +21,9 @@ settings:
   label: 'Main navigation'
   label_display: '0'
   provider: system
-  level: 2
+  level: 1
   depth: 0
-  expand_all_items: true
+  expand_all_items: false
 visibility:
   user_role:
     id: user_role

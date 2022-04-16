@@ -21,7 +21,7 @@ settings:
   label: 'Main navigation'
   label_display: '0'
   provider: system
-  level: 2
+  level: 1
   depth: 0
   expand_all_items: true
 visibility:
