@@ -18,5 +18,9 @@ services:
     xdebug: debug
     config:
       php: .vscode/php.ini
+  myservice:
+    type: php
+    build_as_root:
+      - sudo apt-get install php-gd
 
 

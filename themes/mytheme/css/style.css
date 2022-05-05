@@ -69,7 +69,9 @@ tfoot {
     color:black;
 }
 
-
+.adminimal nav.is-horizontal.is-collapsible.position-container.is-horizontal-enabled ul.tabs.primary {
+    background: #d3d3d3 !important;
+}
 
 ul.menu {
     margin-bottom: 0;
