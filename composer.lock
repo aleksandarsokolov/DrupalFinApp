@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bacf10aaa50eab84055eb284634fce9e",
+    "content-hash": "a09a0b7fa58d52a046618232d02cdf7d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1323,26 +1323,26 @@
         },
         {
             "name": "drupal/charts",
-            "version": "5.0.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/charts.git",
-                "reference": "5.0.0"
+                "reference": "8.x-3.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/charts-5.0.0.zip",
-                "reference": "5.0.0",
-                "shasum": "384a3513b6957d8e6677d2e15cf6772bb38f8141"
+                "url": "https://ftp.drupal.org/files/projects/charts-8.x-3.3.zip",
+                "reference": "8.x-3.3",
+                "shasum": "dd67bd5764a766525777d83b8963655f0e0bf8c3"
             },
             "require": {
-                "drupal/core": "^9.2"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.0.0",
-                    "datestamp": "1651418827",
+                    "version": "8.x-3.3",
+                    "datestamp": "1636438364",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"

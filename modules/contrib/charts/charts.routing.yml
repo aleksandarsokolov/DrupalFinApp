@@ -2,14 +2,6 @@ charts.settings:
   path: /admin/config/content/charts
   defaults:
     _form: Drupal\charts\Form\ChartsConfigForm
-    _title: 'Chart configuration'
-  requirements:
-    _permission: 'administer site configuration'
-
-charts.settings.advanced:
-  path: /admin/config/content/charts/advanced
-  defaults:
-    _form: Drupal\charts\Form\ChartsConfigAdvancedForm
-    _title: 'Chart advanced configuration form'
+    _title: 'Default chart configuration'
   requirements:
     _permission: 'administer site configuration'

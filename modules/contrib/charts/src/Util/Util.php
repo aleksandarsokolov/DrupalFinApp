@@ -5,14 +5,14 @@ namespace Drupal\charts\Util;
 use Drupal\views\ViewExecutable;
 
 /**
- * Utilities class containing various helper methods.
+ * Util.
  */
 class Util {
 
   /**
    * Views Data.
    *
-   * @param \Drupal\views\ViewExecutable|null $view
+   * @param \Drupal\views\ViewExecutable $view
    *   View.
    * @param array $labelValues
    *   Label Values.
@@ -28,13 +28,13 @@ class Util {
    */
   public static function viewsData(ViewExecutable $view = NULL, array $labelValues = [], $labelField = '', array $color = [], $attachmentChartTypeOption = NULL) {
     $data = [];
-    $style_options = $view->getStyle()->options['chart_settings'];
+    $style_options = $view->getStyle()->options;
     foreach ($view->result as $row_number => $row) {
       $view->row_index = $row->index;
       $numberFields = 0;
       $rowData = [];
       foreach ($labelValues as $fieldId => $rowDataValue) {
-        if ($style_options['fields']['allow_advanced_rendering'] == 1 || isset($view->field[$labelField]->options['type']) && $view->field[$labelField]->options['type'] === 'timestamp') {
+        if ($style_options['allow_advanced_rendering'] == 1 || (isset($view->field[$labelField]->options['type']) && $view->field[$labelField]->options['type'] == 'timestamp')) {
           $renderedLabelField = $view->field[$labelField]->advancedRender($row);
         }
         else {
@@ -42,10 +42,10 @@ class Util {
         }
         $renderedLabelField = strip_tags($renderedLabelField);
         $rowData[$numberFields] = [
-          'value' => $style_options['fields']['allow_advanced_rendering'] ? $view->field[$fieldId]->advancedRender($row) : $view->field[$fieldId]->getValue($row),
+          'value' => $style_options['allow_advanced_rendering'] ? $view->field[$fieldId]->advancedRender($row) : $view->field[$fieldId]->getValue($row),
           'label_field' => $renderedLabelField,
           'label' => $view->field[$fieldId]->label(),
-          'color' => $color[$fieldId]['color'],
+          'color' => $color[$fieldId],
           'type' => $attachmentChartTypeOption,
         ];
         $numberFields++;
@@ -76,21 +76,14 @@ class Util {
   }
 
   /**
-   * Remove hidden fields.
-   *
-   * @param \Drupal\views\ViewExecutable $view
-   *   The view.
-   * @param array $fieldValues
-   *   Field values.
+   * @param $view
+   * @param $fieldValues
    *
    * @return array
-   *   Visible views.
    */
-  public static function removeHiddenFields(ViewExecutable $view, array $fieldValues) {
+  public static function removeHiddenFields($view, $fieldValues) {
     $fields = $view->display_handler->getOption('fields');
-    $visibleFields = array_filter($fields, function ($field) {
-      return !empty($field['exclude']);
-    });
+    $visibleFields = array_filter($fields, function ($field) { return !empty($field['exclude']); });
     $visibleFields = array_diff_key($fieldValues, $visibleFields);
 
     return $visibleFields;
@@ -141,10 +134,9 @@ class Util {
    */
   public static function checkMissingLibrary($libraryPath = '') {
     if (!file_exists(DRUPAL_ROOT . DIRECTORY_SEPARATOR . $libraryPath)) {
-      \Drupal::service('messenger')
-        ->addMessage(t('Charting libraries might not be installed at the location @libraryPath.', [
-          '@libraryPath' => $libraryPath,
-        ]), 'error');
+        \Drupal::service('messenger')->addMessage(t('Charting libraries might not be installed at the location @libraryPath.', [
+        '@libraryPath' => $libraryPath,
+      ]), 'error');
     }
   }
 

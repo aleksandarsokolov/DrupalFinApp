@@ -210,7 +210,7 @@
         "composer/installers": "^1.9",
         "d3/d3": "3.5.17",
         "d3v4/d3": "4.9.1",
-        "drupal/charts": "^5.0",
+        "drupal/charts": "^3.3",
         "drupal/color_field": "^2.4",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-project-message": "^9.1",
