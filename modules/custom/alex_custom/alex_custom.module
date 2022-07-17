@@ -65,6 +65,10 @@ function alex_custom_node_presave(EntityInterface $node) {
       // If PaymentType = CreditCard and Day > 22
       if($billpayment == 1 && $billday > 22) {
         $billmonth = $billmonth + 1;
+        if ($billmonth == 13) {
+          $billmonth = 1;
+          $year = $year + 1;
+        }
       }
 
       // Get Company
