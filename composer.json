@@ -210,16 +210,29 @@
         "composer/installers": "^1.9",
         "d3/d3": "3.5.17",
         "d3v4/d3": "4.9.1",
+        "drupal/backup_migrate": "^5.0",
+        "drupal/bootstrap_layouts": "^5.2",
         "drupal/charts": "^3.3",
         "drupal/color_field": "^2.4",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-project-message": "^9.1",
         "drupal/core-recommended": "^9.1",
         "drupal/core-vendor-hardening": "^9.1",
+        "drupal/date_popup": "^1.2",
+        "drupal/ds": "^3.13",
+        "drupal/entity_browser": "^2.7",
+        "drupal/entity_browser_entity_form": "^2.7",
+        "drupal/entity_reference_revisions": "^1.9",
+        "drupal/feeds": "^3.0@beta",
+        "drupal/feeds_tamper": "^2.0@beta",
         "drupal/fontawesome": "^2.23",
+        "drupal/inline_entity_form": "^1.0@RC",
         "drupal/panels": "^4.6",
         "drupal/replicate": "^1.0",
         "drupal/replicate_ui": "^1.0",
+        "drupal/tamper": "^1.0@alpha",
+        "drupal/token": "^1.10",
+        "drupal/views_aggregator": "^2.0",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "^10.4",
         "highcharts/3d": "6.1.0",
@@ -235,7 +248,13 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "drupal/core-vendor-hardening": true
+        }
     },
     "extra": {
         "drupal-scaffold": {
