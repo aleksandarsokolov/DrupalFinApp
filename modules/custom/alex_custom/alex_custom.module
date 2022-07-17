@@ -67,7 +67,7 @@ function alex_custom_node_presave(EntityInterface $node) {
         $billmonth = $billmonth + 1;
         if ($billmonth == 13) {
           $billmonth = 1;
-          $year = $year + 1;
+          $billyear = $billyear + 1;
         }
       }
 
