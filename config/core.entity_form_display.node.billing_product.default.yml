@@ -12,8 +12,6 @@ dependencies:
     - field.field.node.billing_product.field_billing_product_type
     - field.field.node.billing_product.field_billing_tag
     - node.type.billing_product
-  module:
-    - content_moderation
 id: node.billing_product.default
 targetEntityType: node
 bundle: billing_product
@@ -59,7 +57,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_billing_tag:
-    type: entity_reference_autocomplete
+    type: entity_reference_autocomplete_tags
     weight: 6
     region: content
     settings:

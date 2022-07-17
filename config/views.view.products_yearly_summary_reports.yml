@@ -545,16 +545,44 @@ display:
           prefix: $
           suffix: ''
       style:
-        type: grid
+        type: table
         options:
           grouping: {  }
-          columns: 12
-          automatic_width: false
-          alignment: horizontal
-          row_class_custom: row
-          row_class_default: false
-          col_class_custom: 'col-sm-3 col-md-1 col-1'
-          col_class_default: false
+          row_class: col-sm-3
+          default_row_class: true
+          columns:
+            field_billing_year: field_billing_year
+            field_billing_month: field_billing_month
+            field_billing_price: field_billing_price
+          default: '-1'
+          info:
+            field_billing_year:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_billing_month:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_billing_price:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
       row:
         type: fields
         options: {  }
@@ -1360,8 +1388,8 @@ display:
           click_sort_column: value
           type: number_decimal
           settings: {  }
-          group_column: value
-          group_columns: {  }
+          group_column: null
+          group_columns: null
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -1391,8 +1419,8 @@ display:
               rendered: true
               rendered_strip: false
           title: 'Monthly Spendings'
-          xaxis_title: 'Horizontal Title'
-          yaxis_title: 'Vertical Title'
+          xaxis_title: Month
+          yaxis_title: Amount
           allow_advanced_rendering: 0
           library: billboard
           type: line
