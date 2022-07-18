@@ -358,10 +358,10 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            alter_text: false
+            text: ''
             make_link: false
-            path: ''
+            path: '/monthly-report?month={{ field_billing_month }}&year={{ field_billing_year }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -464,7 +464,71 @@ display:
           type: number_integer
           settings:
             thousand_separator: ''
-            prefix_suffix: true
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_billing_month_1:
+          id: field_billing_month_1
+          table: node__field_billing_month
+          field: field_billing_month
+          relationship: reverse__node__field_billing_products
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "<div>\r\n\r\n<a href=\"/bills?year={{ raw_arguments.field_billing_year_value }}&month={{ field_billing_month_1__value  }}\" class=\"button button-action button--primary button--small\"><span class=\"fontawesome-icon-inline\"><i class=\"fas fa-receipt\"></i>&nbsp;&nbsp;</span>Bills Details</a>\r\n<a href=\"/products?year={{ raw_arguments.field_billing_year_value }}&month={{ field_billing_month_1__value }}\" class=\"button button-action button--primary button--small\"><span class=\"fontawesome-icon-inline\"><i class=\"fas fa-shopping-basket\"></i>&nbsp;&nbsp;</span>Products Details</a>\r\n</div>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -548,11 +612,12 @@ display:
         type: table
         options:
           grouping: {  }
-          row_class: col-sm-3
+          row_class: ''
           default_row_class: true
           columns:
             field_billing_year: field_billing_year
             field_billing_month: field_billing_month
+            field_billing_month_1: field_billing_month_1
             field_billing_price: field_billing_price
           default: '-1'
           info:
@@ -564,6 +629,13 @@ display:
               empty_column: false
               responsive: ''
             field_billing_month:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_billing_month_1:
               sortable: false
               default_sort_order: asc
               align: ''

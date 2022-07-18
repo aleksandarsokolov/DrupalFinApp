@@ -210,6 +210,7 @@
         "composer/installers": "^1.9",
         "d3/d3": "3.5.17",
         "d3v4/d3": "4.9.1",
+        "drupal/asset_injector": "2.10",
         "drupal/backup_migrate": "^5.0",
         "drupal/bootstrap_layouts": "^5.2",
         "drupal/charts": "^3.3",
