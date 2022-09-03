@@ -31,7 +31,7 @@ class AssetInjectorCssTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->drupalPlaceBlock('local_tasks_block');
@@ -82,7 +82,8 @@ class AssetInjectorCssTest extends BrowserTestBase {
     $this->getSession()->getPage()->hasContent('asset_injector/css/blocks');
     /** @var \Drupal\asset_injector\Entity\AssetInjectorCss $asset */
     foreach (asset_injector_get_assets(NULL, ['asset_injector_css']) as $asset) {
-      $path = parse_url(file_create_url($asset->internalFileUri()), PHP_URL_PATH);
+      $path = parse_url(\Drupal::service('file_url_generator')
+        ->generateAbsoluteString($asset->internalFileUri()), PHP_URL_PATH);
       $path = str_replace(base_path(), '/', $path);
 
       $this->drupalGet($path);

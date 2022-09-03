@@ -38,7 +38,7 @@ class AssetInjectorJsTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->drupalPlaceBlock('local_tasks_block');
@@ -90,7 +90,8 @@ class AssetInjectorJsTest extends BrowserTestBase {
 
     /** @var \Drupal\asset_injector\Entity\AssetInjectorJs $asset */
     foreach (asset_injector_get_assets(NULL, ['asset_injector_js']) as $asset) {
-      $path = parse_url(file_create_url($asset->internalFileUri()), PHP_URL_PATH);
+      $path = parse_url(\Drupal::service('file_url_generator')
+        ->generateAbsoluteString($asset->internalFileUri()), PHP_URL_PATH);
       $path = str_replace(base_path(), '/', $path);
 
       $this->drupalGet($path);
