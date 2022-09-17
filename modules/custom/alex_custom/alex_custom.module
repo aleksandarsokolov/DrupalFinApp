@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
 // use Drupal\redirect\RedirectRepository;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_help().
@@ -58,6 +59,30 @@ function alex_custom_node_presave(EntityInterface $node) {
       $billday = (int)$date->format('d');
       $billmonth = (int)$date->format('m');
       $billyear = (int)$date->format('Y');
+
+      foreach (array_column($node->get('field_billing_bill_tags')->getValue(), 'target_id') as &$billtagid) {
+        foreach($node->field_billing_products->referencedEntities() as &$product) {
+          $tag_found = false;
+          foreach(array_column($product->get('field_billing_tag')->getValue(), 'target_id') as $producttagid){
+            if($producttagid == $billtagid){
+              $tag_found = true;
+              break;
+            }
+          }
+          if($tag_found) {
+            break;
+          } else  {
+            $product->field_billing_tag[] = ['target_id' => $billtagid];
+            $product->save();
+          }
+        }
+        // Only update the employee company if it's different.      
+        // if ($employee->EMPLOYEE_COMPANY_FIELD->target_id !== $dept_company_id) {
+        //   $employee->EMPLOYEE_COMPANY_FIELD->target_id = $dept_company_id;
+        //   $employee->save();
+        // }
+
+      }
       
       // Get PaymentType
       $billpayment = (int)$node->field_billing_payment_type->getString();
@@ -103,8 +128,6 @@ function alex_custom_node_presave(EntityInterface $node) {
      
   }
 }
-
-
 
 
 // /**
