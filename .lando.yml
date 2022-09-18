@@ -4,24 +4,34 @@ config:
   framework: drupal9
   php: '7.4'
   via: apache
-  webroot: .
   database: mysql
   drush: ^9
-  xdebug: false
-  cache: true
+  cache: false
   composer_version: '2.2.12'
-  conf:
-    php: .vscode/php.ini
 services:
   appserver:
     build:
       - composer install
-    xdebug: debug
+    webroot: .
+    xdebug: false
+    overrides:
+      environment:
+        XDEBUG_MODE:
     config:
       php: .vscode/php.ini
   myservice:
     type: php
     build_as_root:
       - sudo apt-get install php-gd
+tooling:
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug for Apache.
+    cmd: rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && docker-php-ext-enable xdebug && /etc/init.d/apache2 reload && echo "Xdebug enabled"
+    user: root
 
-
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug for Apache.
+    cmd: rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload && echo "Xdebug disabled"
+    user: root
