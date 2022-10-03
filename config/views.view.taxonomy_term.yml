@@ -20,7 +20,6 @@ dependencies:
   module:
     - charts
     - charts_billboard
-    - charts_highcharts
     - datetime
     - fontawesome
     - node
@@ -255,7 +254,7 @@ display:
     id: block_4
     display_title: 'Products Block'
     display_plugin: block
-    position: 9
+    position: 10
     display_options:
       fields:
         field_billing_date:
@@ -1329,7 +1328,7 @@ display:
     id: block_5
     display_title: 'Product Tags Block'
     display_plugin: block
-    position: 8
+    position: 9
     display_options:
       fields:
         name:
@@ -2164,7 +2163,7 @@ display:
     id: block_product_type_summary
     display_title: 'Product Type Summary Block'
     display_plugin: block
-    position: 6
+    position: 7
     display_options:
       fields:
         field_billing_product_type_icon:
@@ -2666,7 +2665,7 @@ display:
     id: block_products_table
     display_title: 'Products Table Block'
     display_plugin: block
-    position: 7
+    position: 8
     display_options:
       fields:
         field_billing_date:
@@ -3524,102 +3523,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_billing_product_type_target_id:
-          id: field_billing_product_type_target_id
-          table: node__field_billing_product_type
-          field: field_billing_product_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_billing_product_type_target_id_op
-            label: 'Product Type'
-            description: ''
-            use_operator: false
-            operator: field_billing_product_type_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_billing_product_type_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              role_data_entry: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: billing_product_type
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
-        field_billing_tag_target_id:
-          id: field_billing_tag_target_id
-          table: node__field_billing_tag
-          field: field_billing_tag_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_billing_tag_target_id_op
-            label: Tags
-            description: ''
-            use_operator: false
-            operator: field_billing_tag_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_billing_tag_target_id
-            required: false
-            remember: false
-            multiple: true
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              role_data_entry: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: tags
-          type: textfield
-          hierarchy: false
-          limit: true
-          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -3861,7 +3764,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -4163,7 +4065,7 @@ display:
     id: chart_planned_unplanned
     display_title: 'Planned/Unplanned Chart'
     display_plugin: chart_extension
-    position: 4
+    position: 5
     display_options:
       fields:
         field_billing_planned:
@@ -4529,7 +4431,7 @@ display:
     id: chart_product_type
     display_title: 'Product Type Chart'
     display_plugin: chart_extension
-    position: 5
+    position: 6
     display_options:
       fields:
         name:
@@ -4824,7 +4726,7 @@ display:
           xaxis_title: 'Product Type'
           yaxis_title: Amount
           allow_advanced_rendering: 0
-          library: highcharts
+          library: billboard
           type: bar
           label_field: name
           fields:
@@ -4857,7 +4759,7 @@ display:
           red_to: '50'
           xaxis_labels_rotation: '0'
           yaxis_min: '0'
-          yaxis_max: '5000'
+          yaxis_max: '1000'
           yaxis_prefix: $
           yaxis_suffix: ''
           yaxis_decimal_count: ''
