@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_form_mode.node.product_bill_form_modee
     - field.field.node.billing_product.body
-    - field.field.node.billing_product.feeds_item
     - field.field.node.billing_product.field_billing_brand
     - field.field.node.billing_product.field_billing_planned
     - field.field.node.billing_product.field_billing_price
@@ -77,7 +76,6 @@ content:
 hidden:
   body: true
   created: true
-  feeds_item: true
   path: true
   promote: true
   status: true

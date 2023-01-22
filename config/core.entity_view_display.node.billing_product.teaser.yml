@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.billing_product.body
-    - field.field.node.billing_product.feeds_item
     - field.field.node.billing_product.field_billing_brand
     - field.field.node.billing_product.field_billing_planned
     - field.field.node.billing_product.field_billing_price
@@ -35,7 +34,6 @@ content:
     weight: 100
     region: content
 hidden:
-  feeds_item: true
   field_billing_brand: true
   field_billing_planned: true
   field_billing_price: true

@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.billing_product.body
-    - field.field.node.billing_product.feeds_item
     - field.field.node.billing_product.field_billing_brand
     - field.field.node.billing_product.field_billing_planned
     - field.field.node.billing_product.field_billing_price
@@ -85,5 +84,4 @@ content:
     third_party_settings: {  }
     weight: 100
     region: content
-hidden:
-  feeds_item: true
+hidden: {  }

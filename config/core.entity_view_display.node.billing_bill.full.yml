@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.full
     - field.field.node.billing_bill.body
-    - field.field.node.billing_bill.feeds_item
     - field.field.node.billing_bill.field_billing_bill_tags
     - field.field.node.billing_bill.field_billing_company
     - field.field.node.billing_bill.field_billing_date
@@ -322,6 +321,5 @@ content:
     weight: 0
     region: first
 hidden:
-  feeds_item: true
   field_field_billing_verified: true
   layout_builder__layout: true
