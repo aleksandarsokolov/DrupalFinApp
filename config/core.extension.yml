@@ -41,7 +41,6 @@ module:
   entity_browser_entity_form: 0
   entity_reference_revisions: 0
   feeds: 0
-  feeds_tamper: 0
   field: 0
   field_ui: 0
   file: 0

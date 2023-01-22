@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_form_mode.node.bill_form_short
     - field.field.node.billing_bill.body
-    - field.field.node.billing_bill.feeds_item
     - field.field.node.billing_bill.field_billing_bill_tags
     - field.field.node.billing_bill.field_billing_company
     - field.field.node.billing_bill.field_billing_date
@@ -109,7 +108,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  feeds_item: true
   field_billing_month: true
   field_billing_year: true
   field_field_billing_verified: true
