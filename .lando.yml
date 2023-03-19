@@ -7,7 +7,7 @@ config:
   database: mysql
   drush: ^9
   cache: false
-  composer_version: '2.2.12'
+  composer_version: '2.5.1'
 services:
   appserver:
     build:
@@ -29,9 +29,10 @@ tooling:
     description: Enable xdebug for Apache.
     cmd: rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && docker-php-ext-enable xdebug && /etc/init.d/apache2 reload && echo "Xdebug enabled"
     user: root
-
   xdebug-off:
     service: appserver
     description: Disable xdebug for Apache.
     cmd: rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload && echo "Xdebug disabled"
     user: root
+  drupal:
+    service: appserver

@@ -9,7 +9,7 @@
         "source": "https://git.drupalcode.org/project/views_aggregator"
     },
     "require": {
-        "drupal/core": "^9 || ^10"
+        "drupal/core": "^9.2 || ^10"
     },
     "minimum-stability": "dev"
 }

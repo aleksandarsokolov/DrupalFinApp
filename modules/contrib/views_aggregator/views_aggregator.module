@@ -9,7 +9,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\bootstrap\Bootstrap;
-use Drupal\views\ViewExecutable;
 
 require_once __DIR__ . '/views_aggregator_functions.inc';
 
@@ -19,11 +18,15 @@ require_once __DIR__ . '/views_aggregator_functions.inc';
 function views_aggregator_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.views_aggregator':
+      $module_handler = \Drupal::service('module_handler');
+      $path = $module_handler->getModule('views_aggregator')->getPath();
+
       return t('See the <a href="@README">README</a> for View configuration instructions and examples, or browse the <a href="@project">project</a> support queue.', [
         '@project' => Url::fromUri('https://www.drupal.org/project/views_aggregator')->toString(),
-        '@README' => Url::fromUri('base:' . drupal_get_path('module', 'views_aggregator') . '/README.txt')->toString(),
+        '@README' => Url::fromUri('base:' . $path . '/README.txt')->toString(),
       ]);
   }
+
 }
 
 /**
@@ -66,7 +69,8 @@ function views_aggregator_get_aggregation_functions_info($name = NULL) {
   if (empty($name)) {
     return $aggregation_functions;
   }
-  return isset($aggregation_functions[$name]) ? $aggregation_functions[$name] : [];
+
+  return $aggregation_functions[$name] ?? [];
 }
 
 /**
@@ -181,28 +185,4 @@ function template_preprocess_views_aggregator_results_table(&$vars) {
 
   $vars['attributes_array']['id'] = Html::getUniqueId('views_aggregator_datatable');
   template_preprocess_views_view_table($vars);
-}
-
-/**
- * Implements hook_views_pre_build().
- *
- * Store away and remove pagers, so aggregation can be executed correctly.
- */
-function views_aggregator_views_pre_build(ViewExecutable $view) {
-  // Fire only on a display which has a table with aggregation.
-  $display_style_plugin_id = $view->style_plugin ? $view->style_plugin->getPluginId() : NULL;
-  if ($display_style_plugin_id == 'views_aggregator_plugin_style_table') {
-    $pager = $view->display_handler->getOption('pager');
-
-    // Enable all rows to be shown and store the original pager.
-    if ($pager['type'] != 'none' || ($pager['type'] == 'none' && $pager['options']['offset'] > 0)) {
-      $view->original_pager = [
-        $view->current_display => [
-          'pager' => $pager,
-        ],
-      ];
-      $view->setItemsPerPage(0);
-      $view->setOffset(0);
-    }
-  }
 }

@@ -731,10 +731,10 @@ function views_aggregator_tally(array $groups, $field_handler, $separator_group,
  * Scientific notation, e.g., 1.23E-45, is NOT supported, it will return 1.23
  *
  * @param string $string
- *   A string representatin of a double-precision floating point number.
+ *   A string representation of a double-precision floating point number.
  *
  * @return mixed
- *   Returns double or FALSE, if no number could be found in the string.
+ *   Returns double, or FALSE if no number could be found in the string.
  */
 function vap_num($string) {
   // Strip out any spaces and thousand makers.
