@@ -4,7 +4,7 @@ namespace Drupal\views_aggregator\Plugin\views\style;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
-use Drupal\system\Plugin\views\field\BulkForm;
+use Drupal\views\Plugin\views\field\BulkForm;
 use Drupal\views\Plugin\views\style\Table as ViewsTable;
 use Drupal\views\ResultRow;
 use Drupal\views\Render\ViewsRenderPipelineMarkup;
@@ -95,7 +95,7 @@ class Table extends ViewsTable {
       $form['info'][$field]['has_aggr'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Apply group function'),
-        '#default_value' => isset($this->options['info'][$field]['has_aggr']) ? $this->options['info'][$field]['has_aggr'] : FALSE,
+        '#default_value' => $this->options['info'][$field]['has_aggr'] ?? FALSE,
       ];
 
       $group_options = [];
@@ -127,7 +127,7 @@ class Table extends ViewsTable {
         '#type' => 'textfield',
         '#size' => 23,
         '#title' => $parameter_label,
-        '#default_value' => isset($this->options['info'][$field]['aggr_par']) ? $this->options['info'][$field]['aggr_par'] : '',
+        '#default_value' => $this->options['info'][$field]['aggr_par'] ?? '',
         '#states' => [
           'visible' => [
             'input[name="style_options[info][' . $field . '][has_aggr]"]' => [
@@ -140,7 +140,7 @@ class Table extends ViewsTable {
       $form['info'][$field]['has_aggr_column'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Apply column function'),
-        '#default_value' => isset($this->options['info'][$field]['has_aggr_column']) ? $this->options['info'][$field]['has_aggr_column'] : FALSE,
+        '#default_value' => $this->options['info'][$field]['has_aggr_column'] ?? FALSE,
       ];
       $form['info'][$field]['aggr_column'] = [
         '#type' => 'select',
@@ -160,7 +160,7 @@ class Table extends ViewsTable {
         '#type' => 'textfield',
         '#size' => 24,
         '#title' => $parameter_label,
-        '#default_value' => isset($this->options['info'][$field]['aggr_par_column']) ? $this->options['info'][$field]['aggr_par_column'] : '',
+        '#default_value' => $this->options['info'][$field]['aggr_par_column'] ?? '',
         '#states' => [
           'visible' => [
             'input[name="style_options[info][' . $field . '][has_aggr_column]"]' => [
@@ -237,10 +237,10 @@ class Table extends ViewsTable {
       '#title' => $this->t('Column aggregation row applies to'),
       '#type' => 'radios',
       '#options' => [
-        0 => $this->t('the entire result set'),
-        1 => $this->t('the page shown, if a pager is enabled or the result subset, if offset is defined'),
+        0 => $this->t('the entire result set <em>CAUTION: This could cause performance issues with large tables!</em>'),
+        1 => $this->t('the page shown (if pager enabled) or the result subset (if offset defined)'),
       ],
-      '#description' => $this->t('If your view does not have a pager, then the two options are equivalent.'),
+      '#description' => $this->t('If your view does not have a pager or offset, then the two options are equivalent (whole resultset).'),
       '#default_value' => $this->options['column_aggregation']['totals_per_page'],
       '#weight' => 1,
     ];
@@ -325,7 +325,36 @@ class Table extends ViewsTable {
       return;
     }
     $functions = $this->collectAggregationFunctions();
-    $display_id = $this->view->current_display;
+
+    $global_totals = $this->options['column_aggregation']['totals_per_page'];
+    $pager = $this->view->display_handler->getOption('pager');
+    $with_pager = ($pager['type'] != 'none' || ($pager['type'] == 'none' && $pager['options']['offset'] > 0)) ? TRUE : FALSE;
+    $show_global_totals_with_pager = empty($global_totals) && $with_pager == TRUE;
+
+    // If totals based on all rows and pager is set - get the whole resultset.
+    if ($show_global_totals_with_pager && !empty($this->view->total_rows)) {
+      $this->view->is_temp_views_aggregator = TRUE;
+      $args = $this->view->args;
+      $display_id = $this->view->current_display;
+
+      $clone = $this->view->createDuplicate();
+      $clone->is_temp_views_aggregator = TRUE;
+
+      // Remove any paging and offsets and execute the display.
+      $clone->setItemsPerPage(0);
+      $clone->setOffset(0);
+      $clone->executeDisplay($display_id, $args);
+
+      // First apply the row filters (if any), then aggregate the columns.
+      // Only interested in column aggregation, so only 'column' group needed.
+      $column_group = ['column' => []];
+      foreach ($clone->result as $num => $row) {
+        $column_group['column'][$num] = $row;
+      }
+      $totals = $clone->style_plugin->executeAggregationFunctions($column_group, $functions);
+      $clone->postExecute();
+      $clone->destroy();
+    }
 
     // Because we are going to need the View results AFTER token replacement,
     // we render the result set here. This is NOT duplication of CPU time,
@@ -352,7 +381,8 @@ class Table extends ViewsTable {
     if ($group_aggregation_results == 0) {
       // Write group aggregation results into the View results.
       $this->setAggregatedGroupValues($groups, $values, $group_aggregation_results);
-      // Aggregation now complete, destroy rows not part of the aggregation.
+      // With the aggregation functions now complete, destroy rows not part
+      // of the aggregation.
       $this->compressGroupedResults($groups);
     }
 
@@ -371,8 +401,8 @@ class Table extends ViewsTable {
         // Set default sorting options.
         $this->active = $this->options['default'];
         $this->order = !empty($this->options['order']) ? $this->options['order'] : 'asc';
-        $this->order = isset($this->options['info'][$this->active]['default_sort_order']) ? $this->options['info'][$this->active]['default_sort_order'] : $this->order;
-        // Sort by default
+        $this->order = $this->options['info'][$this->active]['default_sort_order'] ?? $this->order;
+        // Sort by default.
         uasort($this->view->result, [$this, 'compareResultRows']);
         // Restore current sorting options.
         $this->order = $order;
@@ -399,76 +429,7 @@ class Table extends ViewsTable {
       $this->fixCounterFields();
     }
 
-    // If we neeed totals on entire result set - calculate with all view rows.
-    if ($this->options['column_aggregation']['totals_per_page'] == 0) {
-      $column_group = ['column' => []];
-      foreach ($this->view->result as $num => $row) {
-        $column_group['column'][$num] = $row;
-      }
-      $totals = $this->executeAggregationFunctions($column_group, $functions);
-    }
-
-    // If we have pager or offset defined - adjust the view results.
-    $pager = $this->view->display_handler->getOption('pager');
-    $result_count = count($this->view->result);
-
-    // Update the view pager if we removed it in hook_view_pre_build.
-    if ($pager['type'] != 'none') {
-      if (isset($this->view->original_pager[$display_id])) {
-        $original_pager = $this->view->original_pager[$display_id]['pager'];
-        $original_pager_options = $original_pager['options'];
-        $items_per_page = $original_pager_options['items_per_page'];
-        $offset = $original_pager_options['offset'];
-        $current_page = $this->view->pager->getCurrentPage();
-        $this->view->total_rows = $result_count;
-        $this->view->pager->setItemsPerPage($items_per_page);
-        $this->view->pager->setOffset($offset);
-        $this->view->pager->total_items = $result_count - $offset;
-        $this->view->setItemsPerPage($items_per_page);
-        $this->view->setOffset($offset);
-        $this->view->pager->updatePageInfo();
-        $start_row = $offset + ($current_page * $items_per_page);
-        $total_items = count($this->view->result);
-        $items = $items_per_page;
-
-        // Show only the rows relevant for the page shown.
-        if ($start_row + $items_per_page > $total_items) {
-          $items = $total_items - $start_row;
-        }
-        $this->view->result = array_slice($this->view->result, $start_row, $items, TRUE);
-      }
-    }
-    else {
-      // No pager, but offset is defined.
-      if ($pager['options']['offset'] > 0) {
-        // Remove the offset rows from the results.
-        $offset = $pager['options']['offset'];
-        $this->view->result = array_slice($this->view->result, $offset, $result_count, TRUE);
-      }
-    }
-
-    // If we need the totals only for the page shown - racalculate again.
-    if ($this->options['column_aggregation']['totals_per_page'] == 1) {
-      $column_group = ['column' => []];
-      foreach ($this->view->result as $num => $row) {
-        $column_group['column'][$num] = $row;
-      }
-      $totals = $this->executeAggregationFunctions($column_group, $functions);
-    }
-
-    // For subtotals - update the group array and recalculate aggregated values.
-    if ($this->view->usePager() || $pager['options']['offset'] > 0) {
-      $functions = $this->collectAggregationFunctions();
-      $groups = $this->aggregateGroups();
-      $values = $this->executeAggregationFunctions($groups, $functions);
-    }
-
-    // Aggregate group results and show them in a separate row, no compression.
-    if ($group_aggregation_results == 1) {
-      $this->setAggregatedGroupValues($groups, $values, $group_aggregation_results);
-    }
-
-    // Set the totals via template_preprocess_views_aggregator_results_table().
+    // Set the totals after eventual sorting has finished.
     if (empty($this->view->totals)) {
       if (isset($totals)) {
         $this->view->totals = $this->setTotalsRow($totals);
@@ -476,6 +437,10 @@ class Table extends ViewsTable {
       else {
         $this->view->totals = $this->setTotalsRow($values);
       }
+    }
+    // Aggregate group results and show them in a separate row, no compression.
+    if ($group_aggregation_results == 1) {
+      $this->setAggregatedGroupValues($groups, $values, $group_aggregation_results);
     }
   }
 
@@ -680,7 +645,7 @@ class Table extends ViewsTable {
    *   If the result is a (nested) array, return the first primitive value.
    *
    * @return string
-   *   the raw contents of the cell
+   *   The raw contents of the cell.
    */
   private function getCellRaw($field_handler, $result_row, $compressed = TRUE) {
     if (isset($field_handler->options['entity_field'])) {
@@ -873,7 +838,7 @@ class Table extends ViewsTable {
           $custom_format = preg_match('/number_format\((.*)\)/', substr($custom_formula, $start_pos), $matches, PREG_OFFSET_CAPTURE);
           $custom_delimiters = str_getcsv($matches[1][0], ',', "'");
           // Check if arguments are set, otherwise use dot for default decimal.
-          $rendered_values[] = number_format($new_value, isset($custom_delimiters[0]) ? $custom_delimiters[0] : 0, isset($custom_delimiters[1]) ? $custom_delimiters[1] : '.', isset($custom_delimiters[2]) ? $custom_delimiters[2] : '');
+          $rendered_values[] = number_format($new_value, $custom_delimiters[0] ?? 0, $custom_delimiters[1] ?? '.', $custom_delimiters[2] ?? '');
         }
         else {
           $rendered_values[] = $new_value;
@@ -1177,7 +1142,6 @@ class Table extends ViewsTable {
     $label_prefix = ($this->options['group_aggregation']['result_label_prefix']) ? $this->options['group_aggregation']['result_label_prefix'] : '';
     $label_suffix = ($this->options['group_aggregation']['result_label_suffix']) ? $this->options['group_aggregation']['result_label_suffix'] : '';
     $field_handlers = $this->view->field;
-    $pager = $this->view->display_handler->getOption('pager');
 
     // Need to sort the groups according to the view sort.
     if (isset($this->order) && $this->order == 'desc') {
@@ -1198,7 +1162,6 @@ class Table extends ViewsTable {
           foreach ($rows as $num => $row) {
             $separator = $this->options['info'][$field_name]['aggr_par'];
             $group_rows = count(array_keys($rows));
-
             if ($group_aggregation_results == 1) {
               if ($current_row == $group_rows) {
                 $insert_row = $insert_row + $current_row;
@@ -1499,7 +1462,7 @@ class Table extends ViewsTable {
    * Set correct counter field order after sorting.
    */
   private function fixCounterFields() {
-    // Get the list of counter fields
+    // Get the list of counter fields.
     $fields = [];
     foreach ($this->view->field as $field_name => $properties) {
       if ($properties->pluginId == 'counter') {
@@ -1520,4 +1483,5 @@ class Table extends ViewsTable {
       }
     }
   }
+
 }

@@ -4,7 +4,6 @@ namespace Drupal\Tests\views_aggregator\Functional\Plugin;
 
 use Drupal\dynamic_page_cache\EventSubscriber\DynamicPageCacheSubscriber;
 use Drupal\Tests\views\Functional\ViewTestBase;
-use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Entity\View;
 
 /**
@@ -26,7 +25,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     // Modules for core functionality.
     'views',
     'views_aggregator',
@@ -50,16 +49,15 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
-    parent::setUp($import_test_views);
+  protected function setUp($import_test_views = TRUE, $modules = ['views_aggregator_test_config']): void {
+    parent::setUp($import_test_views, $modules);
     $this->enableViewsTestModule();
-    ViewTestData::createTestViews(get_class($this), ['views_aggregator_test_config']);
   }
 
   /**
    * Test table caption/summary.
    */
-  public function testAccessibilitySettings() {
+  public function testAccessibilitySettings(): void {
     $this->drupalGet('va-test-style-table');
 
     $result = $this->xpath('//caption/child::text()');
@@ -87,13 +85,13 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
 
     $this->drupalGet('va-test-style-table');
     $result = $this->xpath('//summary/child::text()');
-    $this->assertEquals(0, count($result), 'Ensure that the summary disappears.');
+    $this->assertCount(0, $result, 'Ensure that the summary disappears.');
   }
 
   /**
    * Test table fields in columns.
    */
-  public function testFieldInColumns() {
+  public function testFieldInColumns(): void {
     $this->drupalGet('va-test-style-table');
 
     // Ensure that both columns are in separate tds.
@@ -125,7 +123,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   /**
    * Test that a number with the value of "0" is displayed in the table.
    */
-  public function testNumericFieldVisible() {
+  public function testNumericFieldVisible(): void {
     // Adds a new datapoint in the views_test_data table to have a person with
     // an age of zero.
     $data_set = $this->dataSet();
@@ -153,7 +151,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   /**
    * Test that empty columns are hidden when empty_column is set.
    */
-  public function testEmptyColumn() {
+  public function testEmptyColumn(): void {
     // Empty the 'job' data.
     \Drupal::database()->update('views_test_data')
       ->fields(['job' => ''])
@@ -163,16 +161,16 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
 
     // Test that only one of the job columns still shows.
     $result = $this->xpath('//thead/tr/th/a[text()="Job"]');
-    $this->assertEquals(1, count($result), 'Ensure that empty column header is hidden.');
+    $this->assertCount(1, $result, 'Ensure that empty column header is hidden.');
 
     $result = $this->xpath('//tbody/tr/td[contains(concat(" ", @class, " "), " views-field-job-1 ")]');
-    $this->assertEquals(0, count($result), 'Ensure the empty table cells are hidden.');
+    $this->assertCount(0, $result, 'Ensure the empty table cells are hidden.');
   }
 
   /**
    * Tests grouping by a field.
    */
-  public function testGrouping() {
+  public function testGrouping(): void {
     /** @var \Drupal\views\ViewEntityInterface $view */
     $view = \Drupal::entityTypeManager()->getStorage('view')->load('va_test_style_table');
     // Get a reference to the display configuration so we can alter some
@@ -215,11 +213,12 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
     ];
 
     // Ensure that we don't find the caption containing unsafe markup.
-    $this->assertNoRaw($unsafe_markup, "Didn't find caption containing unsafe markup.");
+    // Ensure the caption doesn't contain unsafe markup.
+    $this->assertSession()->responseNotContains($unsafe_markup);
 
     // Ensure that all expected captions are found.
     foreach ($expected_captions as $raw_caption) {
-      $this->assertEscaped($raw_caption);
+      $this->assertSession()->assertEscaped($raw_caption);
     }
 
     $display = &$view->getDisplay('default');
@@ -237,26 +236,27 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
     ];
 
     // Ensure that we don't find the caption containing unsafe markup.
-    $this->assertNoRaw($unsafe_markup, "Didn't find caption containing unsafe markup.");
+    // Ensure the caption doesn't contain unsafe markup.
+    $this->assertSession()->responseNotContains($unsafe_markup);
 
     // Ensure that all expected captions are found.
     foreach ($expected_captions as $raw_caption) {
-      $this->assertEscaped($raw_caption);
+      $this->assertSession()->assertEscaped($raw_caption);
     }
   }
 
   /**
    * Tests the cacheability of the table display.
    */
-  public function testViewsAggregatorTableCacheability() {
+  public function testViewsAggregatorTableCacheability(): void {
     \Drupal::service('module_installer')->uninstall(['page_cache']);
 
     $url = 'va-test-style-table';
     $this->drupalGet($url);
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertEquals('MISS', $this->drupalGetHeader(DynamicPageCacheSubscriber::HEADER));
+    $this->assertEquals('MISS', $this->getSession()->getResponseHeader(DynamicPageCacheSubscriber::HEADER));
     $this->drupalGet($url);
-    $this->assertEquals('HIT', $this->drupalGetHeader(DynamicPageCacheSubscriber::HEADER));
+    $this->assertEquals('HIT', $this->getSession()->getResponseHeader(DynamicPageCacheSubscriber::HEADER));
   }
 
 }

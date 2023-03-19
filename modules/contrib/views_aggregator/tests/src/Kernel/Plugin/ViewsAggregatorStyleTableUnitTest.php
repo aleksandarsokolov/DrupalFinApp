@@ -25,7 +25,7 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'views',
     'views_aggregator',
     'views_aggregator_test_config',
@@ -43,7 +43,7 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
+  protected function setUp($import_test_views = TRUE): void {
     parent::setUp($import_test_views);
     ViewTestData::createTestViews(get_class($this), ['views_aggregator_test_config']);
   }
@@ -51,7 +51,7 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
   /**
    * Tests the Views Aggregator table style.
    */
-  public function testViewsAggregatorTable() {
+  public function testViewsAggregatorTable(): void {
     $view = Views::getView('va_test_style_table');
     $view->setDisplay('default');
     $view->initStyle();
@@ -90,8 +90,8 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
     $style_plugin = $view->style_plugin;
     $style_plugin->options['default'] = '';
     $style_plugin->buildSortPost();
-    $this->assertIdentical($style_plugin->order, NULL, 'No sort order was set, when no order was specified and no default column was selected.');
-    $this->assertIdentical($style_plugin->active, NULL, 'No sort field was set, when no order was specified and no default column was selected.');
+    $this->assertSame($style_plugin->order, NULL, 'No sort order was set, when no order was specified and no default column was selected.');
+    $this->assertSame($style_plugin->active, NULL, 'No sort field was set, when no order was specified and no default column was selected.');
     $view->destroy();
 
     // Setup a valid default + column specific default sort order.
@@ -100,8 +100,8 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
     $style_plugin->options['default'] = 'id';
     $style_plugin->options['info']['id']['default_sort_order'] = 'desc';
     $style_plugin->buildSortPost();
-    $this->assertIdentical($style_plugin->order, 'desc', 'Fallback to the right default sort order.');
-    $this->assertIdentical($style_plugin->active, 'id', 'Fallback to the right default sort field.');
+    $this->assertSame($style_plugin->order, 'desc', 'Fallback to the right default sort order.');
+    $this->assertSame($style_plugin->active, 'id', 'Fallback to the right default sort field.');
     $view->destroy();
 
     // Setup a valid default + table default sort order.
@@ -111,8 +111,8 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
     $style_plugin->options['info']['id']['default_sort_order'] = NULL;
     $style_plugin->options['order'] = 'asc';
     $style_plugin->buildSortPost();
-    $this->assertIdentical($style_plugin->order, 'asc', 'Fallback to the right default sort order.');
-    $this->assertIdentical($style_plugin->active, 'id', 'Fallback to the right default sort field.');
+    $this->assertSame($style_plugin->order, 'asc', 'Fallback to the right default sort order.');
+    $this->assertSame($style_plugin->active, 'id', 'Fallback to the right default sort field.');
     $view->destroy();
 
     // Use an invalid field.
@@ -122,8 +122,8 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
     $random_name = $this->randomMachineName();
     $request->query->set('order', $random_name);
     $style_plugin->buildSortPost();
-    $this->assertIdentical($style_plugin->order, 'asc', 'No sort order was set, when invalid sort order was specified.');
-    $this->assertIdentical($style_plugin->active, NULL, 'No sort field was set, when invalid sort order was specified.');
+    $this->assertSame($style_plugin->order, 'asc', 'No sort order was set, when invalid sort order was specified.');
+    $this->assertSame($style_plugin->active, NULL, 'No sort field was set, when invalid sort order was specified.');
     $view->destroy();
 
     // Use a existing field, and sort both ascending and descending.
@@ -133,8 +133,8 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
       $request->query->set('sort', $order);
       $request->query->set('order', 'id');
       $style_plugin->buildSortPost();
-      $this->assertIdentical($style_plugin->order, $order, 'Ensure the right sort order was set.');
-      $this->assertIdentical($style_plugin->active, 'id', 'Ensure the right order was set.');
+      $this->assertSame($style_plugin->order, $order, 'Ensure the right sort order was set.');
+      $this->assertSame($style_plugin->active, 'id', 'Ensure the right order was set.');
       $view->destroy();
     }
 
@@ -172,7 +172,7 @@ class ViewsAggregatorStyleTableUnitTest extends PluginKernelTestBase {
    * @param \Drupal\views\ViewExecutable $view
    *   The executable to prepare.
    */
-  protected function prepareView(ViewExecutable $view) {
+  protected function prepareView(ViewExecutable $view): void {
     $view->setDisplay();
     $view->initStyle();
     $view->initHandlers();

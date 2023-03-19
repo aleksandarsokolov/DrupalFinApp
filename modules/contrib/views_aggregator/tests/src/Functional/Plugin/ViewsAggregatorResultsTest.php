@@ -3,7 +3,6 @@
 namespace Drupal\Tests\views_aggregator\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
-use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Entity\View;
 
 /**
@@ -23,7 +22,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'views',
     'views_aggregator',
     'views_aggregator_test_config',
@@ -46,16 +45,15 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
-    parent::setUp($import_test_views);
+  protected function setUp($import_test_views = TRUE, $modules = ['views_aggregator_test_config']): void {
+    parent::setUp($import_test_views, $modules);
     $this->enableViewsTestModule();
-    ViewTestData::createTestViews(get_class($this), ['views_aggregator_test_config']);
   }
 
   /**
    * Test the pager and how it works with totals.
    */
-  public function testPagerSettings() {
+  public function testPagerSettings(): void {
     $this->drupalGet('va-test-style-table');
 
     $view = View::load('va_test_style_table');
@@ -71,7 +69,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     // Check the total sum of 'age' is for the page shown.
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXPath('//thead/tr/td', '84');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '84');
 
     // Enable totals to be calculated on the entire result set.
     $display = &$view->getDisplay('default');
@@ -80,18 +79,19 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     // Check the total sum of 'age' is for the entire result set.
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXPath('//thead/tr/td', '136');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '136');
   }
 
   /**
    * Test the positioning of the column aggregation results (totals).
    */
-  public function testTotalsSettings() {
+  public function testTotalsSettings(): void {
     $this->drupalGet('va-test-style-table');
 
     // The results should be in both table header and footer.
-    $this->assertFieldByXPath('//thead/tr/td', 'TOTAL');
-    $this->assertFieldByXPath('//tfoot/tr/td', 'TOTAL');
+    $this->assertSession()->elementTextContains('xpath', '//thead/tr/td', 'TOTAL');
+    $this->assertSession()->elementTextContains('xpath', '//tfoot/tr/td', 'TOTAL');
 
     // Set the totals row in the table header only.
     $view = View::load('va_test_style_table');
@@ -102,8 +102,9 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     // Ensure the 'TOTAL' label appears only in the table header.
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXPath('//thead/tr/td', 'TOTAL');
-    $this->assertNoFieldByXPath('//tfoot/tr/td', 'TOTAL');
+    $xpath = '//thead/tr/td[@id="view-id-table-column" and @class="views-field views-field-id is-active"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, 'TOTAL');
+    $this->assertEmpty($this->xpath('//tfoot/tr/td'));
 
     // Set the totals row in the table header only.
     $display = &$view->getDisplay('default');
@@ -113,24 +114,25 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     // Ensure the 'TOTAL' label appears only in the table footer.
     $this->drupalGet('va-test-style-table');
-    $this->assertNoFieldByXPath('//thead/tr/td', 'TOTAL');
-    $this->assertFieldByXPath('//tfoot/tr/td', 'TOTAL');
+    $this->assertEmpty($this->xpath('//thead/tr/td'));
+    $this->assertSession()->elementTextContains('xpath', '//tfoot/tr/td', 'TOTAL');
   }
 
   /**
    * Test the group functions.
    */
-  public function testGroupResultFunctions() {
+  public function testGroupResultFunctions(): void {
     $this->drupalGet('va-test-style-table');
 
     $view = View::load('va_test_style_table');
     $display = &$view->getDisplay('default');
 
-    // Make sure 'Singer' appears multiple times on the page.
-    $this->assertNoUniqueText('Singer');
+    // Make sure 'Singer' appears exactly four times on the page.
+    $this->assertSession()->pageTextMatchesCount(4, '/Singer/');
 
     // Make sure 'age' is not grouped either.
-    $this->assertNoFieldByXPath('//tbody/tr/td[@headers="view-age-table-column" and @class="views-field views-field-age"]', '52');
+    $xpath = '//tbody/tr/td[@headers="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextNotContains('xpath', $xpath, '52');
 
     // Remove the 'job_1' column.
     unset($display['display_options']['fields']['job_1']);
@@ -152,11 +154,12 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $this->drupalGet('va-test-style-table');
 
     // Check if 'Tally members' function worked.
-    $this->assertRaw('George (1)<br />John (1)');
+    $this->assertSession()->responseContains('George (1)<br />John (1)');
     // Check if 'Singer' is found only once.
-    $this->assertUniqueText('Singer');
+    $this->assertSession()->pageTextContainsOnce('Singer');
     // Check that 'age' is grouped, compressed and sum is applied.
-    $this->assertFieldByXPath('//tbody/tr/td[@headers="view-age-table-column" and @class="views-field views-field-age"]', '52');
+    $xpath = '//tbody/tr[4]/td[@headers="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '52');
 
     // Set the 'Enumerate (sort., no dupl.)' function.
     $display = &$view->getDisplay('default');
@@ -168,7 +171,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     $this->drupalGet('va-test-style-table');
     // Check if 'Enumerate (sort., no dupl.)' function worked.
-    $this->assertRaw('George<br />John');
+    $this->assertSession()->responseContains('George<br />John');
 
     // Set the 'Count unique' function.
     $display = &$view->getDisplay('default');
@@ -180,20 +183,23 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
 
     $this->drupalGet('va-test-style-table');
     // Check if 'Count unique' function worked.
-    $this->assertFieldByXpath('//tbody/tr/td[@headers="view-name-table-column" and @class="views-field views-field-name"]', '2');
+    $xpath = '//tbody/tr[4]/td[@headers="view-name-table-column" and @class="views-field views-field-name"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '2');
   }
 
   /**
    * Test the column functions.
    */
-  public function testColumnResultFunctions() {
+  public function testColumnResultFunctions(): void {
     $this->drupalGet('va-test-style-table');
 
     // We have 'Sum' selected as column aggregation on column 'age'.
-    $this->assertFieldByXPath('//thead/tr/td', '136');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '136');
 
     // And 'Label' as column aggregation on column 'ID'.
-    $this->assertFieldByXPath('//thead/tr/td', 'TOTAL');
+    $xpath = '//thead/tr/td[@id="view-id-table-column" and @class="views-field views-field-id is-active"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, 'TOTAL');
 
     $view = View::load('va_test_style_table');
 
@@ -204,7 +210,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]', '27.2');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '27.2');
 
     // Function 'Count'.
     $display = &$view->getDisplay('default');
@@ -213,7 +220,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXPath('//thead/tr/td', '5');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '5');
 
     // Function 'Count unique'.
     $display = &$view->getDisplay('default');
@@ -223,7 +231,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-job-table-column" and @class="views-field views-field-job"]', '4');
+    $xpath = '//thead/tr/td[@id="view-job-table-column" and @class="views-field views-field-job"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '4');
 
     // Function 'Enumerate raw'.
     $display = &$view->getDisplay('default');
@@ -233,7 +242,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertRaw('Speaker<br />Songwriter<br />Drummer<br />Singer<br />Singer</td>');
+    $this->assertSession()->responseContains('Speaker<br />Songwriter<br />Drummer<br />Singer<br />Singer</td>');
 
     // Function 'Enumerate (sort, no dupl.)'.
     $display = &$view->getDisplay('default');
@@ -243,7 +252,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertRaw('Drummer<br />Singer<br />Songwriter<br />Speaker');
+    $this->assertSession()->responseContains('Drummer<br />Singer<br />Songwriter<br />Speaker');
 
     // Function 'Maximum'.
     $display = &$view->getDisplay('default');
@@ -252,7 +261,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]', '30');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '30');
 
     // Function 'Median'.
     $display = &$view->getDisplay('default');
@@ -261,7 +271,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]', '27');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '27');
 
     // Function 'Minimum'.
     $display = &$view->getDisplay('default');
@@ -270,7 +281,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]', '25');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '25');
 
     // Function 'Range'.
     $display = &$view->getDisplay('default');
@@ -279,7 +291,8 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
     $view->save();
 
     $this->drupalGet('va-test-style-table');
-    $this->assertFieldByXpath('//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]', '25 - 30');
+    $xpath = '//thead/tr/td[@id="view-age-table-column" and @class="views-field views-field-age"]';
+    $this->assertSession()->elementTextContains('xpath', $xpath, '25 - 30');
   }
 
 }
