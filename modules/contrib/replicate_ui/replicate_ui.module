@@ -57,7 +57,7 @@ function replicate_ui_entity_operation(EntityInterface $entity) {
     (array) \Drupal::config('replicate_ui.settings')->get('entity_types')
   );
 
-  if ($supports_replicate) {
+  if ($supports_replicate && $entity->hasLinkTemplate('replicate')) {
     $url = $entity->toUrl('replicate');
 
     if ($url->access()) {

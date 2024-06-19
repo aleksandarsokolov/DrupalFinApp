@@ -3,6 +3,7 @@
 namespace Drupal\Tests\feeds\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -105,6 +106,32 @@ trait FeedsCommonTrait {
   }
 
   /**
+   * Moves a file from the resources directory to a public or private directory.
+   *
+   * This method is useful in combination with the upload fetcher.
+   *
+   * @param string $file
+   *   The file to move.
+   * @param string $dir
+   *   (optional) The directory to move to. Defaults to 'public://feeds'.
+   *
+   * @return string
+   *   The location to where the file was saved.
+   */
+  protected function copyResourceFileToDir(string $file, string $dir = NULL): string {
+    $file_system = $this->container->get('file_system');
+
+    if (is_null($dir)) {
+      $dir = 'public://feeds';
+    }
+    $upload_destination = $dir . '/' . basename($file);
+
+    $file_system->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
+    $file_system->saveData(file_get_contents($this->resourcesPath() . '/' . $file), $upload_destination);
+    return $upload_destination;
+  }
+
+  /**
    * Reloads an entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -142,6 +169,31 @@ trait FeedsCommonTrait {
     static::assertEquals($expected_node_count, $node_count, strtr($message, [
       '@expected' => $expected_node_count,
       '@count' => $node_count,
+    ]));
+  }
+
+  /**
+   * Asserts that the given number of terms exist.
+   *
+   * @param int $expected_term_count
+   *   The expected number of terms in the taxonomy_term_data table.
+   * @param string $message
+   *   (optional) The message to assert.
+   */
+  protected function assertTermCount($expected_term_count, $message = '') {
+    if (!$message) {
+      $message = '@expected terms have been created (actual: @count).';
+    }
+
+    $term_count = $this->container->get('database')
+      ->select('taxonomy_term_data')
+      ->fields('taxonomy_term_data', [])
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEquals($expected_term_count, $term_count, strtr($message, [
+      '@expected' => $expected_term_count,
+      '@count' => $term_count,
     ]));
   }
 
@@ -190,13 +242,23 @@ trait FeedsCommonTrait {
   }
 
   /**
+   * Returns the base url of the Drupal installation.
+   *
+   * @return string
+   *   The Drupal base url.
+   */
+  protected function getBaseUrl(): string {
+    return \Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBaseUrl();
+  }
+
+  /**
    * Returns the url to the Feeds resources directory.
    *
    * @return string
    *   The url to the Feeds resources directory.
    */
-  protected function resourcesUrl() {
-    return \Drupal::request()->getSchemeAndHttpHost() . '/' . $this->getModulePath('feeds') . '/tests/resources';
+  protected function resourcesUrl(): string {
+    return $this->getBaseUrl() . '/' . $this->getModulePath('feeds') . '/tests/resources';
   }
 
   /**

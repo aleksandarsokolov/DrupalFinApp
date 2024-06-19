@@ -8,7 +8,13 @@ use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
+
+// Workaround to support tests against both Drupal 10.1 and Drupal 11.0.
+// @todo Remove once we depend on Drupal 10.2.
+if (!trait_exists(EntityReferenceFieldCreationTrait::class)) {
+  class_alias('\Drupal\Tests\field\Traits\EntityReferenceTestTrait', EntityReferenceFieldCreationTrait::class);
+}
 
 /**
  * Tests for the entityreference target.
@@ -17,7 +23,7 @@ use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
  */
 class EntityReferenceTest extends FeedsKernelTestBase {
 
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
 
   /**
    * Tests if items are updated that previously referenced a missing item.
@@ -173,6 +179,9 @@ class EntityReferenceTest extends FeedsKernelTestBase {
     $this->assertEquals('Page 1', $node->title->value);
     $node2 = $this->reloadEntity($node2);
     $this->assertEquals('Page 2', $node2->title->value);
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -324,6 +333,9 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       $node = $this->reloadEntity($nodes[$i]);
       $this->assertEquals('Article ' . $i, $node->title->value);
     }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -432,6 +444,9 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       $term = $this->reloadEntity($terms[$i]);
       $this->assertEquals('Description of term ' . $i, $term->description->value);
     }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -510,6 +525,116 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       $node = Node::load($nid);
       $this->assertEquals($expected_value, $node->field_event->getValue());
     }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
+  }
+
+  /**
+   * Tests if terms can get automatically created.
+   */
+  public function testAutocreateTerms() {
+    // Install the taxonomy module with a vocabulary.
+    $this->installTaxonomyModuleWithVocabulary();
+
+    // Create an entityreference field to this taxonomy.
+    $this->createEntityReferenceField('node', 'article', 'field_tags', 'Tags', 'taxonomy_term', 'default', [
+      'target_bundles' => ['tags'],
+    ]);
+
+    // Create a feed type for importing articles, with a mapper to the
+    // entityreference field 'field_tags'.
+    $feed_type = $this->createFeedTypeForCsv([
+      'title' => 'title',
+      'guid' => 'guid',
+      'alpha' => 'alpha',
+    ], [
+      'mappings' => array_merge($this->getDefaultMappings(), [
+        [
+          'target' => 'field_tags',
+          'map' => ['target_id' => 'alpha'],
+          'settings' => [
+            'reference_by' => 'name',
+            'autocreate' => TRUE,
+          ],
+        ],
+      ]),
+    ]);
+
+    // Import articles.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(2);
+
+    // Assert that two terms were added to the vocabulary 'tags'.
+    $this->assertTermCount(2);
+    $term = Term::load(1);
+    $this->assertEquals('Lorem', $term->name->value);
+    $term = Term::load(2);
+    $this->assertEquals('Ut wisi', $term->name->value);
+
+    // Assert that on the imported nodes the terms are referenced.
+    $node = Node::load(1);
+    $this->assertEquals(1, $node->field_tags->target_id);
+    $node = Node::load(2);
+    $this->assertEquals(2, $node->field_tags->target_id);
+  }
+
+  /**
+   * Tests if terms can get automatically created in the right vocabulary.
+   */
+  public function testAutocreateTermsWithBundleSelection() {
+    // Install the taxonomy module with a vocabulary.
+    $this->installTaxonomyModuleWithVocabulary();
+
+    // Add another vocabulary.
+    $this->entityTypeManager->getStorage('taxonomy_vocabulary')->create([
+      'vid' => 'foo',
+      'name' => 'Foo',
+    ])->save();
+
+    // Create an entityreference field.
+    $this->createEntityReferenceField('node', 'article', 'field_term', 'Term', 'taxonomy_term', 'default', [
+      'target_bundles' => ['tags', 'foo'],
+    ]);
+
+    // Create a feed type for importing articles, with a mapper to the
+    // entityreference field 'field_term'.
+    $feed_type = $this->createFeedTypeForCsv([
+      'title' => 'title',
+      'guid' => 'guid',
+      'alpha' => 'alpha',
+    ], [
+      'mappings' => array_merge($this->getDefaultMappings(), [
+        [
+          'target' => 'field_term',
+          'map' => ['target_id' => 'alpha'],
+          'settings' => [
+            'reference_by' => 'name',
+            'autocreate' => TRUE,
+            'autocreate_bundle' => 'foo',
+          ],
+        ],
+      ]),
+    ]);
+
+    // Import articles.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(2);
+
+    // Assert that the created terms are inside the vocabulary 'foo'.
+    $this->assertTermCount(2);
+    $term = Term::load(1);
+    $this->assertEquals('Lorem', $term->name->value);
+    $this->assertEquals('foo', $term->bundle());
+    $term = Term::load(2);
+    $this->assertEquals('Ut wisi', $term->name->value);
+    $this->assertEquals('foo', $term->bundle());
   }
 
 }

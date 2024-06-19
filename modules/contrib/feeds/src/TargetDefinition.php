@@ -8,6 +8,13 @@ namespace Drupal\feeds;
 class TargetDefinition implements TargetDefinitionInterface {
 
   /**
+   * The target plugin id.
+   *
+   * @var string
+   */
+  protected $pluginId;
+
+  /**
    * The definition label.
    *
    * @var string
@@ -50,7 +57,13 @@ class TargetDefinition implements TargetDefinitionInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Sets the plugin id.
+   *
+   * @param string $plugin_id
+   *   The plugin id.
+   *
+   * @return $this
+   *   An instance of itself.
    */
   public function setPluginId($plugin_id) {
     $this->pluginId = $plugin_id;
@@ -145,7 +158,10 @@ class TargetDefinition implements TargetDefinitionInterface {
    * @return $this
    */
   public function addProperty($property, $label = '', $description = '') {
-    $this->properties[$property] = ['label' => $label, 'description' => $description];
+    $this->properties[$property] = [
+      'label' => $label,
+      'description' => $description,
+    ];
     return $this;
   }
 

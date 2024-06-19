@@ -7,7 +7,7 @@
             },
             "previewLimit": 50,
             "server": "127.0.0.1",
-            "port": 49167,
+            "port": 32829,
             "driver": "MariaDB",
             "name": "DrupalFinAppDB",
             "database": "drupal9",

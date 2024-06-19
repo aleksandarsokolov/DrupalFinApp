@@ -28,6 +28,22 @@ class CronTest extends FeedsBrowserTestBase {
   }
 
   /**
+   * Returns the file from the Feeds "in progress" directory.
+   *
+   * @param string $subdirectory
+   *   The subdirectory to get the progress file for.
+   *
+   * @return object
+   *   The found file.
+   */
+  protected function getInProgressFile(string $subdirectory) {
+    // Assert that a file exists in the in_progress dir.
+    $files = $this->container->get('file_system')->scanDirectory('private://feeds/in_progress/' . $subdirectory, '/.*/');
+    $this->assertCount(1, $files, 'The feeds "in progress" dir contains one file.');
+    return reset($files);
+  }
+
+  /**
    * Tests importing through cron.
    */
   public function test() {
@@ -76,7 +92,7 @@ class CronTest extends FeedsBrowserTestBase {
     \Drupal::cache('feeds_download')->deleteAll();
     sleep(1);
     $this->drupalGet('feed/' . $feed->id() . '/import');
-    $this->submitForm([], t('Import'));
+    $this->submitForm([], 'Import');
     $feed = $this->reloadEntity($feed);
 
     $manual_imported_time = $feed->getImportedTime();
@@ -100,6 +116,29 @@ class CronTest extends FeedsBrowserTestBase {
     $this->assertEquals(12, $feed->getItemCount());
     $this->assertEquals($manual_imported_time, $feed->getImportedTime());
     $this->assertEquals(0, $feed->getNextImportTime());
+  }
+
+  /**
+   * Tests the behavior of the "in progress" directory when the URL returns 404.
+   */
+  public function testFeedWith404Url() {
+    $feed_type = $this->createFeedType();
+    $feed_type->setImportPeriod(60);
+    $mappings = $feed_type->getMappings();
+    unset($mappings[0]['unique']);
+    $feed_type->setMappings($mappings);
+    $feed_type->save();
+
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesUrl() . '/rss/nonexistent.rss2',
+    ]);
+    \Drupal::cache('feeds_download')->deleteAll();
+    sleep(1);
+    $this->cronRun();
+    $files = $this->container->get('file_system')->scanDirectory('private://feeds/in_progress/' . $feed->id(), '/.*/');
+    // In this case, we do not keep any copies, otherwise files would pile up
+    // after a while.
+    $this->assertCount(0, $files, 'The feeds "in progress" dir contains no files.');
   }
 
   /**
@@ -135,7 +174,7 @@ class CronTest extends FeedsBrowserTestBase {
 
     // Select a file that contains 9 items.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/nodes.csv',
     ]);
 
     // Schedule import.
@@ -257,6 +296,58 @@ class CronTest extends FeedsBrowserTestBase {
   }
 
   /**
+   * Tests that an import gets aborted when the file to import gets removed.
+   */
+  public function testAbortImportWhenTemporaryFileIsDeleted() {
+    // Install module that alters how many items can be processed per cron run.
+    $this->container->get('module_installer')->install([
+      'feeds_test_multiple_cron_runs',
+    ]);
+    $this->rebuildContainer();
+
+    // Create a feed type.
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'GUID',
+      'title' => 'Title',
+    ], [
+      'fetcher' => 'http',
+      'fetcher_configuration' => [],
+      'parser_configuration' => [
+        // Only parse 5 lines at a time.
+        'line_limit' => 5,
+      ],
+      'mappings' => [
+        [
+          'target' => 'feeds_item',
+          'map' => ['guid' => 'guid'],
+        ],
+        [
+          'target' => 'title',
+          'map' => ['value' => 'title'],
+        ],
+      ],
+    ]);
+
+    // Create a feed and a schedule an import.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesUrl() . '/csv/many_nodes_ordered.csv',
+    ]);
+    $feed->startCronImport();
+
+    // Run the first cron. Five nodes should have been imported.
+    $this->cronRun();
+    $this->assertNodeCount(5);
+
+    // Remove file.
+    $file = $this->getInProgressFile($feed->id());
+    $this->assertTrue($this->container->get('file_system')->delete($file->uri));
+
+    // Run cron again and assert that no more nodes are imported.
+    $this->cronRun();
+    $this->assertNodeCount(5);
+  }
+
+  /**
    * Tests that a cron run does not fail after deleting a feed type.
    *
    * When a feed is using periodic import, an import for that feed gets
@@ -325,7 +416,7 @@ class CronTest extends FeedsBrowserTestBase {
 
     // Create a feed that contains 9 items.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/nodes.csv',
     ]);
 
     // Schedule import.

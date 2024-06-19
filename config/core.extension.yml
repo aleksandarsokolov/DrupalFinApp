@@ -4,7 +4,6 @@ module:
   alex_custom: 0
   asset_injector: 0
   automated_cron: 0
-  backup_migrate: 0
   big_pipe: 0
   block: 0
   block_content: 0
@@ -19,14 +18,11 @@ module:
   charts_google: 0
   charts_highcharts: 0
   ckeditor: 0
-  ckeditor_ucsbbutton: 0
-  ckeditor_ucsbicon: 0
   comment: 0
   config: 0
   contact: 0
   content_moderation: 0
   contextual: 0
-  csv_serialization: 0
   ctools: 0
   ctools_block: 0
   ctools_views: 0
@@ -64,8 +60,6 @@ module:
   page_cache: 0
   path: 0
   path_alias: 0
-  quickedit: 0
-  rdf: 0
   replicate: 0
   replicate_ui: 0
   rest: 0
@@ -81,10 +75,10 @@ module:
   toolbar: 0
   tour: 0
   update: 0
+  upgrade_status: 0
   user: 0
   views_aggregator: 0
   views_aggregator_more_functions: 0
-  views_data_export: 0
   views_ui: 0
   workflows: 0
   ds: 1

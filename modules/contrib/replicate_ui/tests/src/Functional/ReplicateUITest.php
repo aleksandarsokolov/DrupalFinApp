@@ -6,7 +6,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
-use Drupal\Tests\AssertHelperTrait;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -15,8 +14,6 @@ use Drupal\Tests\BrowserTestBase;
  * @group replicate
  */
 class ReplicateUITest extends BrowserTestBase {
-
-  use AssertHelperTrait;
 
   /**
    * {@inheritdoc}
@@ -49,7 +46,7 @@ class ReplicateUITest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->user = $this->drupalCreateUser([
@@ -111,7 +108,7 @@ class ReplicateUITest extends BrowserTestBase {
     $replicated_node = reset($replicated_nodes);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->responseContains('(<em class="placeholder">' . $test_node->id() . '</em>) has been replicated to id <em class="placeholder">' . $replicated_node->id() . '</em>!');
-    $this->assertUrl($replicated_node->toUrl());
+    $this->assertSession()->addressEquals($replicated_node->toUrl());
 
     $this->drupalGet($this->node->toUrl());
     $this->assertSession()->pageTextContains('Replicate');
@@ -157,7 +154,7 @@ class ReplicateUITest extends BrowserTestBase {
       'settings[node][page][fields][title]' => TRUE,
       'settings[node][page][translatable]' => TRUE,
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save configuration');
+    $this->submitForm($edit, 'Save configuration');
 
     $node = Node::create([
       'type' => 'page',

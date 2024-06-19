@@ -8,13 +8,31 @@
 }
 
 .feeds-mapping-form .item-list ul li {
+  margin: 0;
   list-style: none;
   list-style-type: none;
-  margin: 0;
 }
 
 .feeds-mapping-form .feeds-mapping-settings-editing {
   background: #d5e9f2;
+}
+
+.feeds-mapping-form tr.mapping-property {
+  border-bottom: none;
+}
+.feeds-mapping-form tr.mapping-property td {
+  padding: 0.2rem 1rem;
+  vertical-align: middle;
+  border: 0;
+}
+.feeds-mapping-form tr.mapping-property-last {
+  border-bottom: 3px double #e6e4df;
+}
+.feeds-mapping-form tr.mapping-property-first td {
+  padding-top: 0.5rem;
+}
+.feeds-mapping-form tr.mapping-property-last td {
+  padding-bottom: 0.5rem;
 }
 
 .feeds-feed-type-secondary-settings {
@@ -22,9 +40,9 @@
 }
 
 .missing-target .target::before {
-  content: url("images/error.svg");
+  float: left;
   width: 16px;
   height: 16px;
-  float: left;
   margin-right: .5em;
+  content: url("images/error.svg");
 }

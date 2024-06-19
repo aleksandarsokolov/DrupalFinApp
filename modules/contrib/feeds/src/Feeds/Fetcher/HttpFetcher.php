@@ -6,7 +6,9 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
+use Drupal\feeds\Exception\FetchException;
 use Drupal\feeds\FeedInterface;
+use Drupal\feeds\File\FeedsFileSystemInterface;
 use Drupal\feeds\Plugin\Type\ClearableInterface;
 use Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface;
 use Drupal\feeds\Plugin\Type\PluginBase;
@@ -56,6 +58,13 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
   protected $fileSystem;
 
   /**
+   * Drupal file system helper for Feeds.
+   *
+   * @var \Drupal\feeds\File\FeedsFileSystemInterface
+   */
+  protected $feedsFileSystem;
+
+  /**
    * Constructs an UploadFetcher object.
    *
    * @param array $configuration
@@ -70,11 +79,14 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
    *   The cache backend.
    * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   The Drupal file system helper.
+   * @param \Drupal\feeds\File\FeedsFileSystemInterface $feeds_file_system
+   *   The Drupal file system helper for Feeds.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ClientInterface $client, CacheBackendInterface $cache, FileSystemInterface $file_system) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ClientInterface $client, CacheBackendInterface $cache, FileSystemInterface $file_system, FeedsFileSystemInterface $feeds_file_system) {
     $this->client = $client;
     $this->cache = $cache;
     $this->fileSystem = $file_system;
+    $this->feedsFileSystem = $feeds_file_system;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -88,7 +100,8 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
       $plugin_definition,
       $container->get('http_client'),
       $container->get('cache.feeds_download'),
-      $container->get('file_system')
+      $container->get('file_system'),
+      $container->get('feeds.file_system.in_progress'),
     );
   }
 
@@ -96,8 +109,7 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
    * {@inheritdoc}
    */
   public function fetch(FeedInterface $feed, StateInterface $state) {
-    $sink = $this->fileSystem->tempnam('temporary://', 'feeds_http_fetcher');
-    $sink = $this->fileSystem->realpath($sink);
+    $sink = $this->feedsFileSystem->tempnam($feed, 'http_fetcher_');
 
     // Get cache key if caching is enabled.
     $cache_key = $this->useCache() ? $this->getCacheKey($feed) : FALSE;
@@ -110,11 +122,30 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
 
     // 304, nothing to see here.
     if ($response->getStatusCode() == Response::HTTP_NOT_MODIFIED) {
+      // Since the fetch is getting aborted, delete the downloaded file.
+      $this->fileSystem->unlink($sink);
+
       $state->setMessage($this->t('The feed has not been updated.'));
       throw new EmptyFeedException();
     }
+    else {
+      // Check if the fetched data has any content by checking the
+      // "Content-Length" header.
+      $lengths = $response->getHeader('Content-Length');
+      if (count($lengths) > 0) {
+        $length = reset($lengths);
+        if ($length < 1) {
+          // The fetched data is empty. Delete the temporary file and abort the
+          // fetch process.
+          $this->fileSystem->unlink($sink);
 
-    return new HttpFetcherResult($sink, $response->getHeaders());
+          $state->setMessage($this->t('The feed is empty.'));
+          throw new EmptyFeedException();
+        }
+      }
+    }
+
+    return new HttpFetcherResult($sink, $response->getHeaders(), $this->fileSystem);
   }
 
   /**
@@ -127,42 +158,58 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
    *   resource, path or a StreamInterface object.
    * @param string $cache_key
    *   (optional) The cache key to find cached headers. Defaults to false.
+   * @param array $options
+   *   (optional) Additional options to pass to the request.
+   *   See https://docs.guzzlephp.org/en/stable/request-options.html.
    *
    * @return \Guzzle\Http\Message\Response
    *   A Guzzle response.
    *
-   * @throws \RuntimeException
+   * @throws \Drupal\feeds\Exception\FetchException
    *   Thrown if the GET request failed.
    *
    * @see \GuzzleHttp\RequestOptions
    */
-  protected function get($url, $sink, $cache_key = FALSE) {
+  protected function get($url, $sink, $cache_key = FALSE, array $options = []) {
     $url = Feed::translateSchemes($url);
 
-    $options = [RequestOptions::SINK => $sink];
+    $options += [
+      RequestOptions::SINK => $sink,
+      RequestOptions::TIMEOUT => $this->configuration['request_timeout'],
+      RequestOptions::HEADERS => [],
+    ];
+
+    $headers = [];
 
     // Adding User-Agent header from the default guzzle client config for feeds
     // that require that.
     if (isset($this->client->getConfig('headers')['User-Agent'])) {
-      $options[RequestOptions::HEADERS]['User-Agent'] = $this->client->getConfig('headers')['User-Agent'];
+      $headers['User-Agent'] = $this->client->getConfig('headers')['User-Agent'];
     }
 
     // Add cached headers if requested.
     if ($cache_key && ($cache = $this->cache->get($cache_key))) {
       if (isset($cache->data['etag'])) {
-        $options[RequestOptions::HEADERS]['If-None-Match'] = $cache->data['etag'];
+        $headers['If-None-Match'] = $cache->data['etag'];
       }
       if (isset($cache->data['last-modified'])) {
-        $options[RequestOptions::HEADERS]['If-Modified-Since'] = $cache->data['last-modified'];
+        $headers['If-Modified-Since'] = $cache->data['last-modified'];
       }
     }
+
+    // Add header options.
+    $options[RequestOptions::HEADERS] += $headers;
 
     try {
       $response = $this->client->getAsync($url, $options)->wait();
     }
     catch (RequestException $e) {
       $args = ['%site' => $url, '%error' => $e->getMessage()];
-      throw new \RuntimeException($this->t('The feed from %site seems to be broken because of error "%error".', $args));
+
+      // Since the fetch is getting aborted, delete the downloaded file.
+      $this->fileSystem->unlink($sink);
+
+      throw new FetchException(strtr('The feed from %site seems to be broken because of error "%error".', $args));
     }
 
     if ($cache_key) {

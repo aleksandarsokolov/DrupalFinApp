@@ -6,3 +6,6 @@ replicate_ui.settings:
       type: sequence
       sequence:
         type: string
+    check_edit_access:
+      type: boolean
+      label: 'Check original entity edit access'

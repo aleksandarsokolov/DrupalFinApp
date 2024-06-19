@@ -38,11 +38,11 @@ class ReplicatorTest extends UnitTestCase {
     $entity->createDuplicate()->willReturn($clone);
 
     $event_dispatcher = $this->prophesize(EventDispatcherInterface::class);
-    $event_dispatcher->dispatch('replicate__entity__entity_test', Argument::type(ReplicateEntityEvent::class))
+    $event_dispatcher->dispatch(Argument::type(ReplicateEntityEvent::class), 'replicate__entity__entity_test')
       ->shouldBeCalled();
-    $event_dispatcher->dispatch(ReplicatorEvents::REPLICATE_ALTER, Argument::type(ReplicateAlterEvent::class))
+    $event_dispatcher->dispatch(Argument::type(ReplicateAlterEvent::class), ReplicatorEvents::REPLICATE_ALTER)
       ->shouldBeCalled();
-    $event_dispatcher->dispatch(ReplicatorEvents::AFTER_SAVE, Argument::type(AfterSaveEvent::class))
+    $event_dispatcher->dispatch(Argument::type(AfterSaveEvent::class), ReplicatorEvents::AFTER_SAVE)
       ->shouldNotBeCalled();
 
     $entity_type_manager = $this->prophesize(EntityTypeManagerInterface::class);
@@ -83,9 +83,9 @@ class ReplicatorTest extends UnitTestCase {
     $entity->createDuplicate()->willReturn($clone);
 
     $event_dispatcher = $this->prophesize(EventDispatcherInterface::class);
-    $event_dispatcher->dispatch('replicate__entity__entity_test', Argument::type(ReplicateEntityEvent::class))
+    $event_dispatcher->dispatch(Argument::type(ReplicateEntityEvent::class), 'replicate__entity__entity_test')
       ->shouldBeCalled();
-    $event_dispatcher->dispatch('replicate__entity_field__entity_reference', Argument::that(function ($event) {
+    $event_dispatcher->dispatch(Argument::that(function ($event) {
       if (!$event instanceof ReplicateEntityFieldEvent) {
         return FALSE;
       }
@@ -93,9 +93,9 @@ class ReplicatorTest extends UnitTestCase {
         return FALSE;
       }
       return TRUE;
-    }))
+    }), 'replicate__entity_field__entity_reference')
       ->shouldBeCalled();
-    $event_dispatcher->dispatch('replicate__entity_field__textfield', Argument::that(function ($event) {
+    $event_dispatcher->dispatch(Argument::that(function ($event) {
       if (!$event instanceof ReplicateEntityFieldEvent) {
         return FALSE;
       }
@@ -103,11 +103,11 @@ class ReplicatorTest extends UnitTestCase {
         return FALSE;
       }
       return TRUE;
-    }))
+    }), 'replicate__entity_field__textfield')
       ->shouldBeCalled();
-    $event_dispatcher->dispatch(ReplicatorEvents::REPLICATE_ALTER, Argument::type(ReplicateAlterEvent::class))
+    $event_dispatcher->dispatch(Argument::type(ReplicateAlterEvent::class), ReplicatorEvents::REPLICATE_ALTER)
       ->shouldBeCalled();
-    $event_dispatcher->dispatch(ReplicatorEvents::AFTER_SAVE, Argument::type(AfterSaveEvent::class))
+    $event_dispatcher->dispatch(Argument::type(AfterSaveEvent::class), ReplicatorEvents::AFTER_SAVE)
       ->shouldNotBeCalled();
 
     $entity_type_manager = $this->prophesize(EntityTypeManagerInterface::class);

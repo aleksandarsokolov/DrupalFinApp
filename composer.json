@@ -235,6 +235,7 @@
         "drupal/replicate_ui": "^1.0",
         "drupal/tamper": "^1.0@alpha",
         "drupal/token": "^1.10",
+        "drupal/upgrade_status": "^4.3",
         "drupal/views_aggregator": "^2.0",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "^10.4",
