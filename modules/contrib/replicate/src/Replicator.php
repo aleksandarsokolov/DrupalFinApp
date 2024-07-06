@@ -97,7 +97,7 @@ class Replicator {
     if ($clone = $this->cloneEntity($entity)) {
       $this->entityTypeManager->getStorage($entity->getEntityTypeId())->save($clone);
       $event = new AfterSaveEvent($clone);
-      $this->eventDispatcher->dispatch(ReplicatorEvents::AFTER_SAVE, $event);
+      $this->eventDispatcher->dispatch($event, ReplicatorEvents::AFTER_SAVE);
       return $clone;
     }
   }
@@ -136,7 +136,7 @@ class Replicator {
   public function cloneEntity(EntityInterface $entity) {
     if ($clone = $entity->createDuplicate()) {
       $event = new ReplicateEntityEvent($entity);
-      $this->eventDispatcher->dispatch(ReplicatorEvents::replicateEntityEvent($entity->getEntityTypeId()), $event);
+      $this->eventDispatcher->dispatch($event, ReplicatorEvents::replicateEntityEvent($entity->getEntityTypeId()));
 
       if ($clone instanceof FieldableEntityInterface) {
         /** @var FieldableEntityInterface $clone */
@@ -144,7 +144,7 @@ class Replicator {
       }
 
       $event = new ReplicateAlterEvent($clone, $entity);
-      $this->eventDispatcher->dispatch(ReplicatorEvents::REPLICATE_ALTER, $event);
+      $this->eventDispatcher->dispatch($event, ReplicatorEvents::REPLICATE_ALTER);
       return $clone;
     }
   }
@@ -221,7 +221,7 @@ class Replicator {
    */
   private function dispatchEventCloneEntityField(FieldableEntityInterface $clone, $field_name, FieldDefinitionInterface $field_definition) {
     $event = new ReplicateEntityFieldEvent($clone->get($field_name), $clone);
-    $this->eventDispatcher->dispatch(ReplicatorEvents::replicateEntityField($field_definition->getType()), $event);
+    $this->eventDispatcher->dispatch($event, ReplicatorEvents::replicateEntityField($field_definition->getType()));
   }
 
 }

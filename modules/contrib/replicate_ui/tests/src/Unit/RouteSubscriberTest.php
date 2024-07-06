@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\replicate_ui\Unit;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteBuildEvent;

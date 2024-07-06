@@ -1,8 +1,7 @@
 name: 'Alex Custom Module'
 type: module
 description: 'Custom module for FinApp websites'
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10 || ^11
 
 dependencies:
  - node

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\FunctionalJavascriptTests\Ajax;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -8,8 +10,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 
 /**
- * Tests that AJAX-enabled forms work when multiple instances of the same form
- * are on a page.
+ * Tests AJAX-enabled forms when multiple instances of the form are on a page.
  *
  * @group Ajax
  */
@@ -73,9 +74,6 @@ class MultiFormTest extends WebDriverTestBase {
     // of field items and "add more" button for the multi-valued field within
     // each form.
     $this->drupalGet('form-test/two-instances-of-same-form');
-
-    // Wait for javascript on the page to prepare the form attributes.
-    $this->assertSession()->assertWaitOnAjaxRequest();
 
     $session = $this->getSession();
     $page = $session->getPage();

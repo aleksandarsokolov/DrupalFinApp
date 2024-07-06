@@ -58,6 +58,7 @@ class ReplicateConfirmForm extends ContentEntityConfirmFormBase {
             ], [
               'langcode' => $langcode,
             ]),
+            '#maxlength' => 255,
           ];
         }
       }
@@ -68,6 +69,7 @@ class ReplicateConfirmForm extends ContentEntityConfirmFormBase {
           '#description' => $this->t('This text will be used as the label of the new entity being created.'),
           '#required' => TRUE,
           '#default_value' => t('@title (Copy)', ['@title' => $entity->label()]),
+          '#maxlength' => 255,
         ];
       }
     }
@@ -86,10 +88,8 @@ class ReplicateConfirmForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = $this->getEntity();
+    $entity = $this->routeMatch->getParameter($this->getEntityTypeId());
     $label_key = $entity->getEntityType()->getKey('label');
     if ($entity instanceof TranslatableInterface) {
       foreach ($entity->getTranslationLanguages() as $translation_language) {

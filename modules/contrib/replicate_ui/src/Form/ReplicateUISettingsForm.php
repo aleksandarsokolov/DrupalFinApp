@@ -86,6 +86,13 @@ class ReplicateUISettingsForm extends ConfigFormBase {
       '#default_value' => $this->config('replicate_ui.settings')->get('entity_types'),
     ];
 
+    $form['check_edit_access'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Check original entity edit access'),
+      '#description' => $this->t('Disable replicating entities which the user is not allowed to edit'),
+      '#default_value' => $this->config('replicate_ui.settings')->get('check_edit_access'),
+    ];
+
     return $form;
   }
 
@@ -97,6 +104,7 @@ class ReplicateUISettingsForm extends ConfigFormBase {
 
     $this->config('replicate_ui.settings')
       ->set('entity_types', array_values(array_filter($form_state->getValue('entity_types'))))
+      ->set('check_edit_access', $form_state->getValue('check_edit_access'))
       ->save();
     // @todo This should be done through a config save subscriber and it should
     // also invalidate the render/local tasks cache.

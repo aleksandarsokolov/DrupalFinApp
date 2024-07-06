@@ -1,4 +1,4 @@
-name: finapp
+name: finappD10
 recipe: drupal9
 config:
   framework: drupal9

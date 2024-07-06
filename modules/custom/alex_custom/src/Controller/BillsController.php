@@ -89,7 +89,13 @@ class BillsController  extends ControllerBase {
    * {@inheritdoc}
    */
   public function getTermId($term, $vocabulary){
-    $term1 = taxonomy_term_load_multiple_by_name($term,$vocabulary);
+    // $term1 = taxonomy_term_load_multiple_by_name($term,$vocabulary);
+    $term1 = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadByProperties([
+        'vid' => $vocabulary,
+        'name' => $term,
+      ]);
     if(count($term1) == 0) {
         $term1 = Term::create([
             'name' => $term, 
@@ -120,8 +126,9 @@ class BillsController  extends ControllerBase {
 
   public function getCsvRows() {
     $return = [];
- 
-    $csvpath = drupal_get_path('module', 'alex_custom') . '/src/Products.csv';
+
+    $csvpath = \Drupal::service('extension.list.module')->getPath('alex_custom') . '/src/Products.csv';
+    // $csvpath = drupal_get_path('module', 'alex_custom') . '/src/Products.csv';
 
     if (($csv = fopen($csvpath, 'r')) !== FALSE) {
       while (($row = fgetcsv($csv, 0, ',')) !== FALSE) {

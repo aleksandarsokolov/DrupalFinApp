@@ -73,6 +73,10 @@ class RouteSubscriber implements EventSubscriberInterface {
           '_replicate_access' => 'TRUE',
         ];
 
+        if ($config->get('check_edit_access')) {
+          $requirements['_entity_access'] = "$entity_type_id.update";
+        }
+
         $route = new Route($path, $defaults, $requirements, $options);
 
         $route_name = "entity.$entity_type_id.replicate";

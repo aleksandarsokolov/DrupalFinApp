@@ -6,8 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\node\NodeInterface;
 
 /**
- * Create a node with revisions and test viewing, saving, reverting, and
- * deleting revisions for user with access to all.
+ * Tests global node CRUD operation permissions.
  *
  * @group node
  */
@@ -63,9 +62,6 @@ class NodeRevisionsAllTest extends NodeTestBase {
     // Create a user for revision authoring.
     // This must be different from user performing revert.
     $this->revisionUser = $this->drupalCreateUser();
-
-    $settings = get_object_vars($node);
-    $settings['revision'] = 1;
 
     $nodes = [];
     $logs = [];
@@ -161,7 +157,7 @@ class NodeRevisionsAllTest extends NodeTestBase {
     $this->assertNotSame($this->revisionUser->id(), $reverted_node->getRevisionUserId(), 'Node revision author is not original revision author.');
 
     // Confirm that this is not the current version.
-    $node = node_revision_load($node->getRevisionId());
+    $node = $node_storage->loadRevision($node->getRevisionId());
     $this->assertFalse($node->isDefaultRevision(), 'Third node revision is not the current one.');
 
     // Confirm that the node can still be updated.

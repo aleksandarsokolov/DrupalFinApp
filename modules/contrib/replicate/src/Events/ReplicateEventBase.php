@@ -2,8 +2,8 @@
 
 namespace Drupal\replicate\Events;
 
+use Drupal\Component\EventDispatcher\Event;
 use Drupal\Core\Entity\EntityInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 abstract class ReplicateEventBase extends Event {
 
