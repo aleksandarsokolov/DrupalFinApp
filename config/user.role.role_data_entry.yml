@@ -20,6 +20,7 @@ dependencies:
     - taxonomy.vocabulary.product_taxonomy
     - taxonomy.vocabulary.tags
   module:
+    - file
     - filter
     - media
     - node
@@ -50,6 +51,7 @@ permissions:
   - 'create terms in product_taxonomy'
   - 'create terms in tags'
   - 'create video media'
+  - 'delete own files'
   - 'edit any audio media'
   - 'edit any billing_bill content'
   - 'edit any billing_product content'

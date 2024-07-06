@@ -6,5 +6,6 @@ dependencies:
     - node
 id: node.bill_form_short
 label: 'Bill Form Short'
+description: ''
 targetEntityType: node
 cache: true

@@ -6,5 +6,6 @@ dependencies:
     - node
 id: node.product_bill_form_modee
 label: 'Product Bill Form'
+description: ''
 targetEntityType: node
 cache: true

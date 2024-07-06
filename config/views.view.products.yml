@@ -904,7 +904,6 @@ display:
             query_param: year
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -941,7 +940,6 @@ display:
             query_param: month
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -980,7 +978,6 @@ display:
             query_param: company
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1019,7 +1016,6 @@ display:
             query_param: location
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1637,7 +1633,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1674,7 +1669,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2241,7 +2235,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2278,7 +2271,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2895,7 +2887,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2932,7 +2923,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3275,7 +3265,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3312,7 +3301,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3643,7 +3631,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3680,7 +3667,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -4090,7 +4076,6 @@ display:
             query_param: month
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -4127,7 +4112,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -5009,7 +4993,6 @@ display:
             query_param: year
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -5046,7 +5029,6 @@ display:
             query_param: month
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -5579,7 +5561,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -6303,7 +6284,6 @@ display:
             query_param: year
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -6340,7 +6320,6 @@ display:
             query_param: month
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7230,7 +7209,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

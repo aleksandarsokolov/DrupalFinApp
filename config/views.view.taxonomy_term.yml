@@ -15,7 +15,6 @@ dependencies:
     - field.storage.node.field_billing_tag
     - field.storage.taxonomy_term.field_billing_product_type_icon
     - node.type.billing_product
-    - taxonomy.vocabulary.billing_product_type
     - taxonomy.vocabulary.tags
   module:
     - charts
@@ -113,7 +112,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: ''
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1505,7 +1503,6 @@ display:
             query_param: termid
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1910,7 +1907,6 @@ display:
             query_param: termid
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2404,7 +2400,6 @@ display:
             query_param: termid
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3377,7 +3372,6 @@ display:
             query_param: termid
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3944,7 +3938,6 @@ display:
             query_param: termid
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true

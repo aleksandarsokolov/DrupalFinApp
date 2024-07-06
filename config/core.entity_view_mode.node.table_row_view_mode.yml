@@ -6,5 +6,6 @@ dependencies:
     - node
 id: node.table_row_view_mode
 label: 'Table Row View Mode'
+description: ''
 targetEntityType: node
 cache: true

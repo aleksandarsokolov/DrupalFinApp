@@ -42,7 +42,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
@@ -242,7 +242,6 @@ display:
             query_param: year
             fallback: ''
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -359,7 +358,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1051,7 +1050,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1423,7 +1422,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1449,7 +1447,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1633,7 +1631,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1913,7 +1911,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div style=''font-size=24px;''>{{ field_billing_year }}</div>'
+            text: "<div style='font-size=24px;'>{{ field_billing_year }}</div>"
             make_link: false
             path: ''
             absolute: false
