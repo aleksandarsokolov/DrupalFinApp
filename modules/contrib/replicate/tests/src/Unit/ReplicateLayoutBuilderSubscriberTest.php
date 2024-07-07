@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
@@ -20,6 +21,7 @@ use Drupal\replicate\EventSubscriber\ReplicateLayoutBuilderSubscriber;
 use Drupal\replicate\Replicator;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\Prophet;
 
 /**
  * @coversDefaultClass \Drupal\replicate\EventSubscriber\ReplicateLayoutBuilderSubscriber
@@ -89,7 +91,7 @@ class ReplicateLayoutBuilderSubscriberTest extends UnitTestCase {
 
     $this->replicator->cloneEntity($block)->willReturn($clone)->shouldBeCalled();
 
-    $storage = $this->prophesize(EntityStorageInterface::class);
+    $storage = $this->prophesize(RevisionableStorageInterface::class);
     $storage->loadRevision(1)->willReturn($block);
     $this->entityTypeManager->getStorage('block_content')->willReturn($storage);
 
@@ -103,26 +105,27 @@ class ReplicateLayoutBuilderSubscriberTest extends UnitTestCase {
    * @return array<string, FieldableEntityInterface[]>
    *   Provided data.
    */
-  public function replicateAfterSaveFieldableEntityProvider(): array {
-    $non_inline_block_component = $this->prophesize(SectionComponent::class);
+  public static function replicateAfterSaveFieldableEntityProvider(): array {
+    $prophet = new Prophet;
+    $non_inline_block_component = $prophet->prophesize(SectionComponent::class);
     $non_inline_block_component->getUuid()->shouldNotBeCalled();
 
-    $empty_revision_id_plugin = $this->prophesize(InlineBlock::class);
+    $empty_revision_id_plugin = $prophet->prophesize(InlineBlock::class);
     $empty_revision_id_plugin->getConfiguration()->willReturn([]);
-    $empty_revision_id_component = $this->prophesize(SectionComponent::class);
+    $empty_revision_id_component = $prophet->prophesize(SectionComponent::class);
     $empty_revision_id_component->getPlugin()->willReturn($empty_revision_id_plugin);
     $empty_revision_id_component->getUuid()->shouldNotBeCalled();
 
-    $plugin = $this->prophesize(InlineBlock::class);
+    $plugin = $prophet->prophesize(InlineBlock::class);
     $plugin->getConfiguration()->willReturn(['block_revision_id' => 1]);
-    $component = $this->prophesize(SectionComponent::class);
+    $component = $prophet->prophesize(SectionComponent::class);
     $component->get('configuration')->willReturn([]);
     $component->getPlugin()->willReturn($plugin);
     $component->getUuid()->willReturn(NULL);
     $component->set('uuid', NULL)->willReturn($component);
     $component->setConfiguration(Argument::type('array'))->willReturn($component);
 
-    $section = $this->prophesize(Section::class);
+    $section = $prophet->prophesize(Section::class);
     $section->appendComponent(Argument::type(SectionComponent::class))->willReturn($section);
     $section->getComponents()->willReturn([
       $non_inline_block_component,
@@ -131,19 +134,19 @@ class ReplicateLayoutBuilderSubscriberTest extends UnitTestCase {
     ]);
     $section->removeComponent(NULL)->willReturn($section);
 
-    $section_list = $this->prophesize(SectionListInterface::class);
+    $section_list = $prophet->prophesize(SectionListInterface::class);
     $section_list->getSections()->willReturn([$section]);
 
-    $non_translatable_entity = $this->prophesize(FieldableEntityInterface::class);
+    $non_translatable_entity = $prophet->prophesize(FieldableEntityInterface::class);
     $non_translatable_entity->get(OverridesSectionStorage::FIELD_NAME)->willReturn($section_list);
     $non_translatable_entity->hasField(OverridesSectionStorage::FIELD_NAME)->willReturn(TRUE);
-    $non_translatable_entity->language()->willReturn($this->prophesize(LanguageInterface::class));
+    $non_translatable_entity->language()->willReturn($prophet->prophesize(LanguageInterface::class));
     $non_translatable_entity->save()->shouldBeCalled();
 
-    $language = $this->prophesize(LanguageInterface::class);
+    $language = $prophet->prophesize(LanguageInterface::class);
     $language->getId()->willReturn(LanguageInterface::LANGCODE_DEFAULT);
     /** @var \Drupal\Core\Entity\FieldableEntityInterface|\Prophecy\Prophecy\ObjectProphecy $translatable_entity */
-    $translatable_entity = $this->prophesize()->willImplement(FieldableEntityInterface::class)->willImplement(TranslatableInterface::class);
+    $translatable_entity = $prophet->prophesize()->willImplement(FieldableEntityInterface::class)->willImplement(TranslatableInterface::class);
     $translatable_entity->getTranslation(LanguageInterface::LANGCODE_DEFAULT)->willReturn($non_translatable_entity);
     $translatable_entity->getTranslationLanguages()->willReturn([$language]);
     $translatable_entity->hasField(OverridesSectionStorage::FIELD_NAME)->willReturn(TRUE);

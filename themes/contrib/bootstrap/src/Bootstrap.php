@@ -635,7 +635,7 @@ class Bootstrap {
    *
    * @param string $method
    *   Optional. A specific method on the file system service to check for
-   *   its existance.
+   *   its existence.
    *
    * @return \Drupal\Core\File\FileSystemInterface
    *   The File System service, if it exists and if $method exists if it was

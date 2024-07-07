@@ -60,7 +60,7 @@ class ReplicateLayoutBuilderSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
     ];

@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: 'Product Type'
 vid: billing_product_type
-description: ''
+description: null
 weight: 0
+new_revision: false

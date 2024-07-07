@@ -48,6 +48,7 @@ module:
   inline_form_errors: 0
   jsonapi: 0
   layout_builder: 0
+  layout_builder_expose_all_field_blocks: 0
   layout_discovery: 0
   link: 0
   media: 0

@@ -23,7 +23,7 @@ class ReplicateLayoutBuilderSubscriberTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'replicate',
     'layout_builder',
     'layout_discovery',
